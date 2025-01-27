@@ -4,6 +4,8 @@ import hse.kpo.domains.Customer;
 import hse.kpo.interfaces.ICustomerProvider;
 import org.springframework.stereotype.Component;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
