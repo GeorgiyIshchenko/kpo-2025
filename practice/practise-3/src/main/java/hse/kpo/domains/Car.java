@@ -1,8 +1,8 @@
 package hse.kpo.domains;
 
-import hse.kpo.interfaces.IEngine;
 import lombok.Getter;
 import lombok.ToString;
+import hse.kpo.interfaces.IEngine;
 
 @ToString
 public class Car {
@@ -17,6 +17,13 @@ public class Car {
         this.engine = engine;
     }
 
+    
+    /** 
+     * This method is used to recognize if customer fits the car
+     * 
+     * @param customer
+     * @return boolean
+     */
     public boolean isCompatible(Customer customer) {
         return this.engine.isCompatible(customer); // внутри метода просто вызываем соответствующий метод двигателя
     }
