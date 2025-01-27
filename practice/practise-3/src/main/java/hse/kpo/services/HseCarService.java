@@ -15,11 +15,11 @@ public class HseCarService {
 
     private final ICustomerProvider customerProvider;
 
-    public HseCarService(ICarProvider carProvider, ICustomerProvider customersProvider)
-    {
-        this.carProvider = carProvider;
-        this.customerProvider = customersProvider;
-    }
+    // public HseCarService(ICarProvider carProvider, ICustomerProvider customersProvider)
+    // {
+    //     this.carProvider = carProvider;
+    //     this.customerProvider = customersProvider;
+    // }
 
     /**
      * Метод для продажи всех автомобилей всем покупателям.
