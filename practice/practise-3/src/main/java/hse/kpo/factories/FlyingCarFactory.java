@@ -1,9 +1,9 @@
-package studying.factories;
+package hse.kpo.factories;
 
-import studying.domains.Car;
-import studying.domains.FlyingEngine;
-import studying.interfaces.ICarFactory;
-import studying.params.EmptyEngineParams;
+import hse.kpo.domains.Car;
+import hse.kpo.domains.FlyingEngine;
+import hse.kpo.interfaces.ICarFactory;
+import hse.kpo.params.EmptyEngineParams;
 
 public class FlyingCarFactory implements ICarFactory<EmptyEngineParams> {
 

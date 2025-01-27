@@ -1,7 +1,7 @@
-package studying.domains;
+package hse.kpo.domains;
 
 import lombok.ToString;
-import studying.interfaces.IEngine;
+import hse.kpo.interfaces.IEngine;
 
 @ToString
 public class FlyingEngine implements IEngine{
