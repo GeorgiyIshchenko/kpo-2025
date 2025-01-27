@@ -1,12 +1,12 @@
 package hse.kpo.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hse.kpo.domains.Car;
 import hse.kpo.domains.Customer;
 import hse.kpo.interfaces.ICarFactory;
 import hse.kpo.interfaces.ICarProvider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CarService implements ICarProvider {
 
@@ -14,18 +14,40 @@ public class CarService implements ICarProvider {
 
     private int carNumberCounter = 0;
 
+    /**
+     * Метод для создания получения подходящего для покупателя автомобиля.
+     * 
+     * Возвращает первый наиболее подходящий автомобиль и удаляет его из списка cars.
+     * 
+     * @param customer - покупатель
+     * @return - подходящий автомобиль, или null, если для этого покупателя не нашлось подходящих автомобилей.
+     */
+
     @Override
     public Car takeCar(Customer customer) {
 
         var filteredCars = cars.stream().filter(car -> car.isCompatible(customer)).toList();
 
-        var firstCar = filteredCars.stream().findFirst();
+        if (filteredCars.isEmpty()) {
+            return null;
+        }
 
-        firstCar.ifPresent(cars::remove);
+        var firstCar = filteredCars.stream().findFirst().get();
 
-        return firstCar.orElse(null);
+        cars.remove(firstCar);
+
+        return firstCar;
     }
 
+    /**
+     * Добавляет автомобиль с переданными параметрами, выпущенный переданной автомобильной фабрикой.
+     * 
+     * Инкрементирует счетчик автомобилей.
+     * 
+     * @param <TParams> - тип параметров
+     * @param carFactory - автомобильная фабрика
+     * @param carParams - параметры создаваемого автомобиля
+     */
     public <TParams> void addCar(ICarFactory<TParams> carFactory, TParams carParams)
     {
         // создаем автомобиль из переданной фабрики
