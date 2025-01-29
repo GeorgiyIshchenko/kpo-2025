@@ -1,12 +1,5 @@
 package hse.kpo;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import hse.kpo.domains.Customer;
 import hse.kpo.factories.FlyingCarFactory;
 import hse.kpo.factories.HandCarFactory;
@@ -60,7 +53,7 @@ class KpoApplicationTests {
         carService.addCar(flyingCarFactory, EmptyEngineParams.DEFAULT);
 
         for (var customer : customerStorage.getCustomers()) {
-            String carInfo = customer.getCar() != null ? customer.getCar().toString() : "null";
+            String carInfo = customer.getCar() != null ? customer.getCar().toString() : "null");
             System.out.println("Customer: " + customer.getName() + ", car: " + carInfo);
         }
 

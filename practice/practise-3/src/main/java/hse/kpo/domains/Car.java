@@ -1,27 +1,29 @@
 package hse.kpo.domains;
 
+import hse.kpo.interfaces.InEngine;
 import lombok.Getter;
 import lombok.ToString;
-import hse.kpo.interfaces.IEngine;
 
+/**
+ * Car contains engine and VIN.
+ */
 @ToString
 public class Car {
 
-    private IEngine engine;
+    private InEngine engine;
 
     @Getter
-    private int VIN;
+    private int vin;
 
-    public Car(int VIN, IEngine engine) {
-        this.VIN = VIN;
+    public Car(int vin, InEngine engine) {
+        this.vin = vin;
         this.engine = engine;
     }
 
     
     /** 
-     * This method is used to recognize if customer fits the car
-     * 
-     * @param customer
+     * This method is used to recognize if customer fits the car.
+     *
      * @return boolean
      */
     public boolean isCompatible(Customer customer) {
