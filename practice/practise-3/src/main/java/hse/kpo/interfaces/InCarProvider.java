@@ -3,11 +3,14 @@ package hse.kpo.interfaces;
 import hse.kpo.domains.Car;
 import hse.kpo.domains.Customer;
 
-public interface ICarProvider {
+/**
+ * Interface for providing cats instances.
+ */
+public interface InCarProvider {
 
     /**
      * Метод для создания получения подходящего для покупателя автомобиля.
-     * 
+     *
      * @param customer - покупатель
      * @return - подходящий автомобиль
      */

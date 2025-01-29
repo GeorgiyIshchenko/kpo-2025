@@ -1,17 +1,20 @@
 package hse.kpo.domains;
 
+import hse.kpo.interfaces.InEngine;
 import lombok.Getter;
 import lombok.ToString;
-import hse.kpo.interfaces.IEngine;
 
+/**
+ * Engine powered by legs.
+ */
 @ToString
 @Getter
-public class PedalEngine implements IEngine {
+public class PedalEngine implements InEngine {
     private final int size;
 
     /** 
      * Проверка совместимости педального двигателя и покупателя.
-     * 
+     *
      * @param customer - покупатель, с которым мы сравниваем двигатель
      * @return true, если двигатель подходит покупателю
      */
