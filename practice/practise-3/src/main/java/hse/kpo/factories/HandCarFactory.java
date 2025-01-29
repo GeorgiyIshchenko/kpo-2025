@@ -2,16 +2,19 @@ package hse.kpo.factories;
 
 import hse.kpo.domains.Car;
 import hse.kpo.domains.HandEngine;
-import hse.kpo.interfaces.ICarFactory;
+import hse.kpo.interfaces.InCarFactory;
 import hse.kpo.params.EmptyEngineParams;
 import org.springframework.stereotype.Component;
 
+/**
+ * Factory for creating hand cars.
+ */
 @Component
-public class HandCarFactory implements ICarFactory<EmptyEngineParams> {
+public class HandCarFactory implements InCarFactory<EmptyEngineParams> {
 
     /**
      * Метод автомобильной фабрики по сборке ручных автомобилей для создания автомобиля.
-     * 
+     *
      * @param carParams - параметры создаваемого автомобиля EmptyEngineParams
      * @param carNumber - номер автомобиля
      * @return - созданный автомобиль
