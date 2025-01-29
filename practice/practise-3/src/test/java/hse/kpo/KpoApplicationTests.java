@@ -1,6 +1,5 @@
 package hse.kpo;
 
-import org.intellij.lang.annotations.JdkConstants.AdjustableOrientation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,7 +47,6 @@ class KpoApplicationTests {
         customerStorage.addCustomer(new Customer("Света", 6, 6));
         customerStorage.addCustomer(new Customer("Петя", 4, 4));
 
-        var flyingCarFactory = new FlyingCarFactory();
         customerStorage.addCustomer(new Customer("Smart", 1, 1, 301));
         
         carService.addCar(pedalCarFactory, new PedalEngineParams(2));
