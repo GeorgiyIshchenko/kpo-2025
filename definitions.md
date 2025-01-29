@@ -231,3 +231,255 @@ public class Main {
 ### 9. Уникальный факт  
 Связь SOLID и Stream API:  
 Принципы SOLID упрощают использование Stream API. Например, соблюдение SRP (одна ответственность) позволяет более эффективно разбивать логику на потоки и модули, делая код проще и гибче.
+
+# Семинар 3
+
+1. Service Locator
+Определение:
+Service Locator (Локатор сервисов) — это паттерн, который предоставляет единое место (реестр) для получения экземпляров нужных объектов (сервисов). Вместо прямой инициализации нужного класса, вы запрашиваете его у «локатора», который знает, как создавать или хранить эти объекты.
+
+Пример из жизни:
+Представьте, что у вас есть телефонная книга (Service Locator). Вам не нужно помнить все номера телефонов (зависимости). Вы просто открываете книгу и находите нужный контакт. Но если книга слишком разрастётся, то поиск может стать затруднительным, а вы останетесь завязанными на эту «книгу».
+
+Пример кода (упрощённый):
+
+```java
+public class ServiceLocator {
+    private static final Map<String, Object> services = new HashMap<>();
+
+    public static <T> T getService(String key, Class<T> type) {
+        return type.cast(services.get(key));
+    }
+
+    public static <T> void registerService(String key, T service) {
+        services.put(key, service);
+    }
+}
+
+// Где-то в коде:
+ServiceLocator.registerService("emailService", new EmailServiceImpl());
+EmailService emailService = ServiceLocator.getService("emailService", EmailService.class);
+emailService.send("hello@example.com", "Привет!");
+```
+2. DIP (Dependency Inversion Principle)
+Определение:
+Принцип инверсии зависимостей гласит, что:
+
+Модули верхнего уровня не должны зависеть от модулей нижнего уровня. Оба уровня должны зависеть от абстракций.
+Абстракции не должны зависеть от деталей; детали должны зависеть от абстракций.
+Пример из жизни:
+Розетка (абстракция) и вилка (конкретная реализация). Мы подключаемся к стандартной розетке (интерфейсу), поэтому производитель чайника или компьютера лишь соблюдает этот стандарт (абстракцию), а не меняет домовую проводку (конкретику).
+
+Пример кода:
+
+```java
+public interface NotificationSender {
+    void send(String message);
+}
+
+public class EmailSender implements NotificationSender {
+    @Override
+    public void send(String message) {
+        // Код для отправки email
+    }
+}
+
+public class NotificationService {
+    private final NotificationSender sender;
+
+    // Зависимость передается через интерфейс (абстракцию)
+    public NotificationService(NotificationSender sender) {
+        this.sender = sender;
+    }
+
+    public void notify(String message) {
+        sender.send(message);
+    }
+}
+```
+3. IoC (Inversion of Control)
+Определение:
+Inversion of Control (Инверсия управления) — это концепция, при которой вы передаёте контроль за созданием и управлением зависимостей (объектов) внешнему контейнеру или фреймворку. Вместо того чтобы класс сам создавал нужные ему объекты, фреймворк (например, Spring) «вкалывает» (inject) зависимости в класс.
+
+Пример из жизни:
+«Принцип Голливуда» – «Не звоните нам, мы сами вам позвоним». Это значит, что ваш код не контролирует, когда именно создаются зависимости; вы просто пишете логику, а фреймворк сам решает, когда и как это произойдёт.
+
+Пример кода (Spring):
+
+```java
+@Service
+public class OrderService {
+    private final PaymentService paymentService;
+
+    // Вместо new PaymentService() Spring сам "внедрит" зависимость
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+```
+4. Singleton
+Определение:
+Singleton (Одиночка) — это паттерн, который гарантирует, что у класса есть только один экземпляр во всём приложении и предоставляет к нему глобальную точку доступа.
+
+Пример из жизни:
+Президент (в идеале) — в стране только один президент, который выполняет уникальные функции и к которому все обращаются (хотя в реальном мире может быть сложнее, но образ понятен).
+
+Пример кода (классический):
+
+```java
+public class Singleton {
+    private static Singleton instance;
+
+    private Singleton() {
+        // Приватный конструктор
+    }
+
+    public static synchronized Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+```
+5. Prototype
+Определение:
+Prototype (Прототип) — это паттерн, который позволяет копировать уже существующие объекты, не привязываясь к конкретным классам. То есть вы имеете «прототип» и можете тиражировать его копии.
+
+Пример из жизни:
+3D-печать: у вас есть 3D-модель (прототип), и вы можете распечатать (клонировать) столько копий, сколько нужно, без создания заново с нуля.
+
+Пример кода (упрощённый):
+
+```java
+public class Shape implements Cloneable {
+    private String color;
+
+    public Shape(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public Shape clone() {
+        try {
+            return (Shape) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+// Где-то в коде
+Shape original = new Shape("Red");
+Shape copy = original.clone();
+```
+6. Юнит-тесты (JUnit)
+Определение:
+JUnit — это один из наиболее популярных фреймворков для модульного тестирования в Java. Позволяет легко писать тесты, проводить их запуск и проверять корректность работы методов/классов.
+
+Пример кода (JUnit 5):
+
+```java
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+public class CalculatorTest {
+    
+    @Test
+    void testAdd() {
+        Calculator calculator = new Calculator();
+        int result = calculator.add(2, 3);
+        Assertions.assertEquals(5, result, "Сложение должно возвращать 5");
+    }
+}
+```
+7. Mockito (mock + spy)
+Определение:
+
+Mockito — библиотека для создания фейковых объектов (mock) и шпионов (spy), чтобы изолировать тестируемый класс от реальных зависимостей.
+Mock — имитация объекта, где все методы «заглушки» и возвращают запрограммированные ответы.
+Spy — частично реальный объект, в котором можно переопределять (заглушать) только некоторые методы, сохраняя поведение остальных.
+Пример кода (упрощённый):
+
+```java
+import static org.mockito.Mockito.*;
+
+public class UserServiceTest {
+    
+    @Test
+    void testUserRegistration() {
+        // Создаем mock зависимости
+        EmailService emailServiceMock = mock(EmailService.class);
+        when(emailServiceMock.send(anyString(), anyString())).thenReturn(true);
+        
+        UserService userService = new UserService(emailServiceMock);
+        
+        userService.register("user@example.com");
+        
+        verify(emailServiceMock, times(1))
+               .send(eq("user@example.com"), anyString());
+    }
+
+    @Test
+    void testSpyExample() {
+        List<String> realList = new ArrayList<>();
+        List<String> spyList = spy(realList);
+
+        spyList.add("Hello");
+        // при spy реально вызывается метод add, но мы можем переопределить некоторые методы
+        when(spyList.size()).thenReturn(100);
+
+        System.out.println(spyList.size()); // Выведет 100, хотя реально в списке 1 элемент
+    }
+}
+```
+8. @SpringBootTest
+Определение:
+Аннотация SpringBootTest запускает весь контекст Spring Boot для теста. Это значит, что вы получаете полноценное приложение со всеми бинами и конфигурациями, как при реальном запуске, но внутри тестовой среды.
+
+Пример кода:
+
+```java
+@SpringBootTest
+class ApplicationIntegrationTest {
+
+    @Test
+    void contextLoads() {
+        // Проверка, что контекст вообще поднялся
+    }
+}
+```
+9. @Autowired
+Определение:
+Аннотация @Autowired в Spring указывает, что нужная зависимость должна быть «автоматически связана» (инжектирована) контейнером Spring. Контейнер определяет, какой бин подходит по типу или по имени и внедряет его.
+
+Пример кода:
+
+```java
+@Component
+public class OrderService {
+    
+    @Autowired
+    private PaymentService paymentService;
+
+    public void createOrder() {
+        paymentService.pay();
+    }
+}
+```
+10. @Component
+Определение:
+Аннотация @Component говорит Spring о том, что данный класс является «бином», который нужно подхватить и хранить в контейнере. Это базовая аннотация, от которой наследуются более специализированные (@Service, @Repository, @Controller).
+
+Пример кода:
+
+```java
+@Component
+public class PaymentService {
+    public void pay() {
+        System.out.println("Выполняем оплату...");
+    }
+}
+```
+
++1 Уникальный факт
+Исторически паттерн Service Locator активно использовался в старых Java EE приложениях, но со временем в большинстве проектов его стали заменять полноценными IoC-контейнерами (Spring, CDI и т.д.), потому что Service Locator иногда приводил к тому, что код становился «запутанным» и зависимым от «глобальной» точки доступа. Зато в некоторых играх (например, в архитектуре игровых движков) Service Locator до сих пор используется очень активно, чтобы управлять ресурсами (звуками, текстурами) во время игрового процесса.
