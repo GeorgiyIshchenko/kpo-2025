@@ -2,16 +2,19 @@ package hse.kpo.factories;
 
 import hse.kpo.domains.Car;
 import hse.kpo.domains.PedalEngine;
-import hse.kpo.interfaces.ICarFactory;
+import hse.kpo.interfaces.InCarFactory;
 import hse.kpo.params.PedalEngineParams;
 import org.springframework.stereotype.Component;
 
+/**
+ * Factory for creating pedal cars.
+ */
 @Component
-public class PedalCarFactory implements ICarFactory<PedalEngineParams> {
+public class PedalCarFactory implements InCarFactory<PedalEngineParams> {
 
     /**
      * Метод автомобильной фабрики по сборке педальных автомобилей для создания автомобиля.
-     * 
+     *
      * @param carParams - параметры создаваемого автомобиля PedalEngineParams
      * @param carNumber - номер автомобиля
      * @return - созданный автомобиль
@@ -20,6 +23,6 @@ public class PedalCarFactory implements ICarFactory<PedalEngineParams> {
     public Car createCar(PedalEngineParams carParams, int carNumber) {
         var engine = new PedalEngine(carParams.pedalSize()); // создаем двигатель на основе переданных параметров
 
-        return new Car(carNumber, engine); // возвращаем собранный автомобиль с установленным двигателем и определенным номером
+        return new Car(carNumber, engine);
     }
 }
