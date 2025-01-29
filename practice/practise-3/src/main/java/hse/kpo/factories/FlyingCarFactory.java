@@ -4,7 +4,9 @@ import hse.kpo.domains.Car;
 import hse.kpo.domains.FlyingEngine;
 import hse.kpo.interfaces.ICarFactory;
 import hse.kpo.params.EmptyEngineParams;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FlyingCarFactory implements ICarFactory<EmptyEngineParams> {
 
     /**
