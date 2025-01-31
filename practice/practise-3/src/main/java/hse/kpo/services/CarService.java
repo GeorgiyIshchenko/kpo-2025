@@ -6,6 +6,7 @@ import hse.kpo.interfaces.InCarFactory;
 import hse.kpo.interfaces.InCarProvider;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 
@@ -17,11 +18,11 @@ public class CarService implements InCarProvider {
 
     private final List<Car> cars = new ArrayList<>();
 
+    @Getter
     private int carNumberCounter = 0;
 
     /**
      * Метод для создания получения подходящего для покупателя автомобиля.
-     * 
      * Возвращает первый наиболее подходящий автомобиль и удаляет его из списка cars.
      *
      * @param customer - покупатель
