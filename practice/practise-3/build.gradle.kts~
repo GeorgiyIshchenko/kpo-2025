@@ -51,11 +51,3 @@ tasks.withType<Test> {
 application {
     mainClass.set("hse.kpo.KpoApplication")
 }
-
-tasks.test {
-	finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-	dependsOn(tasks.test)
-}
