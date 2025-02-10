@@ -16,6 +16,9 @@ public class Customer {
     @Setter
     private Car car;
 
+    @Setter
+    private Ship ship;
+
     public Customer(String name, int legPower, int handPower) {
         this.name = name;
         this.legPower = legPower;

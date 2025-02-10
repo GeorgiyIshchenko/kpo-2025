@@ -113,7 +113,7 @@ class KpoApplicationTests {
 		hseShipService.sellShips();
 
 		var report = reportBuilder
-				.addOperation("Продажа кораблей")
+				.addOperation("Продажа автомобилей")
 				.addCustomers(shipCustomerStorage.getCustomers())
 				.build();
 
