@@ -2,8 +2,10 @@ package hse.kpo.services;
 
 import hse.kpo.domains.Car;
 import hse.kpo.domains.Customer;
+import hse.kpo.domains.ProductionTypes;
 import hse.kpo.interfaces.ICarFactory;
 import hse.kpo.interfaces.ICarProvider;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 @Component
 public class CarService implements ICarProvider {
 
+    @Getter
     private final List<Car> cars = new ArrayList<>();
 
     private int carNumberCounter = 0;
