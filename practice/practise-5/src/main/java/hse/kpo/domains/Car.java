@@ -1,6 +1,5 @@
 package hse.kpo.domains;
 
-import hse.kpo.enums.ProductionTypes;
 import hse.kpo.interfaces.IEngine;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,6 +18,6 @@ public class Car {
     }
 
     public boolean isCompatible(Customer customer) {
-        return this.engine.isCompatible(customer, ProductionTypes.CAR);// внутри метода просто вызываем соответствующий метод двигателя
+        return this.engine.isCompatible(customer); // внутри метода просто вызываем соответствующий метод двигателя
     }
 }
