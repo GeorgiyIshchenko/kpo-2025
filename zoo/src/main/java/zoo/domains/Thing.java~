@@ -7,10 +7,6 @@ import zoo.interfaces.IInventory;
  */
 public class Thing implements IInventory {
 
-    public Thing(int number) {
-        this.number = number;
-    }
-
     @Override
     public int getNumber() {
         return number;

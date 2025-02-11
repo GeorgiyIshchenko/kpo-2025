@@ -5,8 +5,8 @@ package zoo.interfaces;
  */
 public interface IInventory {
 
-    Integer getNumber();
+    int getNumber();
 
-    void setNumber(Integer number);
+    void setNumber(int number);
 
 }

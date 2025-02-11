@@ -5,8 +5,8 @@ package zoo.domains;
  */
 public class Predator extends Animal {
 
-    public Predator(int number, int foodPerDay) {
-        super(number, foodPerDay);
+    public Predator(int foodPerDay) {
+        super(foodPerDay);
     }
 
 }

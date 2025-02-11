@@ -1,0 +1,12 @@
+package zoo.domains;
+
+/**
+ * Кролик.
+ */
+public class Rabbit extends Herbo {
+
+    public Rabbit(int foodPerDay, int kindness) {
+        super(foodPerDay, kindness);
+    }
+
+}

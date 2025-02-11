@@ -7,8 +7,8 @@ import lombok.Getter;
  */
 public class Herbo extends Animal {
 
-    public Herbo(int number, int foodPerDay, int kindness) {
-        super(number, foodPerDay);
+    public Herbo(int foodPerDay, int kindness) {
+        super(foodPerDay);
         this.kindness = kindness;
     }
 
