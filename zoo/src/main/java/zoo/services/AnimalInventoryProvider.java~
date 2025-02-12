@@ -2,6 +2,10 @@ package zoo.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import zoo.domains.Animal;
 import zoo.domains.Herbo;
@@ -65,10 +69,7 @@ public class AnimalInventoryProvider implements IInventoryProvider {
         return result;
     }
 
-    public List<IInventory> getInventoryList() {
-        return inventoryList;
-    }
-
+    @Getter
     private final List<IInventory> inventoryList = new ArrayList<>();
 
     private int inventoryCnt = 0;

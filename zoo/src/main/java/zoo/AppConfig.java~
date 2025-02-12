@@ -76,7 +76,7 @@ public class AppConfig {
      */
     @Bean
     public ReportBuilder reportBuilder() {
-        return new ReportBuilder();
+        return new ReportBuilder().addFood(hseZoo().getFoodMap(), hseZoo().getFoodSum()).addPettingZoo(hseZoo().getPettingAnimals());
     }
 
     /**

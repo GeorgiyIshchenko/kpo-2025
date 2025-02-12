@@ -33,6 +33,11 @@ public class Animal implements IInventory, IALive {
         this.number = number;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s: Number=%s,FoodPerDay=%s", getClass().getSimpleName(), number, foodPerDay);
+    }
+
     int foodPerDay;
     int number;
 }

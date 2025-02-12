@@ -9,4 +9,9 @@ public class Predator extends Animal {
         super(number, foodPerDay);
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s", super.toString());
+    }
+
 }

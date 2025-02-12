@@ -18,6 +18,14 @@ import zoo.interfaces.IZoo;
 @Component
 public class HseZoo implements IZoo {
 
+    public HseZoo(AnimalInventoryProvider provider) {
+        this.provider = provider;
+    }
+
+    public HseZoo() {
+        this.provider = new AnimalInventoryProvider(new SimpleClinic());
+    }
+
     /**
      * Возвращает словарь с тем, сколько каждый вид животного употребляет еды.
      */
@@ -42,6 +50,6 @@ public class HseZoo implements IZoo {
 
     @Getter
     @Setter
-    AnimalInventoryProvider provider = new AnimalInventoryProvider(new SimpleClinic());
+    AnimalInventoryProvider provider;
 
 }

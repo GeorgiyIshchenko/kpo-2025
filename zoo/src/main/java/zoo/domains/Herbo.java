@@ -24,6 +24,11 @@ public class Herbo extends Animal {
         this.kindness = kindness;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s,Kindness=%s", super.toString(), kindness);
+    }
+
     @Getter
     Integer kindness;
 
