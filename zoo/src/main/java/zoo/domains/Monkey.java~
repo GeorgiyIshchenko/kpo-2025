@@ -1,0 +1,14 @@
+package zoo.domains;
+
+/**
+ * Обезьяна.
+ */
+public class Monkey extends Herbo {
+
+    public Monkey(int foodPerDay, int kindness) {
+        super(foodPerDay, kindness);
+    }
+
+}
+
+

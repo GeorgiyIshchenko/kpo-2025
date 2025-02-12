@@ -1,0 +1,16 @@
+package zoo.services;
+
+import zoo.interfaces.IClinic;
+import zoo.interfaces.IZoo;
+
+public class Zoo implements IZoo {
+
+
+    Zoo(IClinic clinic){
+        this.provider = AnimalInventoryProvider(provider);
+    }
+
+
+    AnimalInventoryProvider provider;
+
+}
