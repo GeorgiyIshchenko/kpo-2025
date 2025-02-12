@@ -3,5 +3,5 @@ package zoo.params;
 /**
  * Параметры инвентаря.
  */
-public record ThingParams() {
+public record ThingParams(int number) {
 }

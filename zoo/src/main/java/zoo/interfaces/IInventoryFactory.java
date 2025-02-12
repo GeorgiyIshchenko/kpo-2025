@@ -1,15 +1,14 @@
 package zoo.interfaces;
 
 import zoo.domains.Animal;
-import zoo.exceptions.ZooException;
 
 /**
  * Интерфейс фабрики животных.
  *
  * @param <T> - параметры животного
  */
-public interface IAnimalFactory<T> {
+public interface IInventoryFactory<T> {
 
-    Animal createAnimal(T params);
+    IInventory createInstance(String entity, T params, int number);
 
 }

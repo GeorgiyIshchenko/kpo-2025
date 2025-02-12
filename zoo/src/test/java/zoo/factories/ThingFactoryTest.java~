@@ -22,7 +22,7 @@ public class ThingFactoryTest {
     @Test
     @DisplayName("Создание стола с помощью фабрики")
     public void testCreateTiger() {
-        Table table = (Table) thingFactory.createInstance("Table", new ThingParams(), 100);
+        Table table = (Table) thingFactory.createThing("Table", new ThingParams(100));
         assertEquals(100, table.getNumber());
 
         table.setNumber(300);
@@ -32,7 +32,7 @@ public class ThingFactoryTest {
     @Test
     @DisplayName("Создание компьютера с помощью фабрики")
     public void testCreateWolf() {
-        Computer wolf = (Computer) thingFactory.createInstance("Computer", new ThingParams(), 200);
+        Computer wolf = (Computer) thingFactory.createThing("Computer", new ThingParams(200));
         assertEquals(200, wolf.getNumber());
     }
 

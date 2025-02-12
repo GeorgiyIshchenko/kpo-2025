@@ -1,0 +1,42 @@
+package zoo.services;
+
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import zoo.interfaces.IClinic;
+import zoo.interfaces.IInventory;
+import zoo.interfaces.IInventoryFactory;
+import zoo.interfaces.IInventoryProvider;
+
+/**
+ * Провайдер животных.
+ */
+public class InventoryProvider implements IInventoryProvider {
+
+    InventoryProvider(IClinic clinic) {
+        this.clinic = clinic;
+    }
+
+    /**
+     * Добавляет животного, если клиника разрешила.
+     */
+    @Override
+    public <T> void addInventory(String name, IInventoryFactory<T> factory, T params) {
+        IInventory inventory = factory.createInstance(
+                name,
+                params,
+                inventoryCnt
+        );
+
+        inventoryCnt++;
+        inventoryList.add(inventory);
+    }
+
+    @Getter
+    private final List<IInventory> inventoryList = new ArrayList<>();
+
+    private int inventoryCnt = 0;
+
+    IClinic clinic;
+
+}

@@ -21,7 +21,7 @@ public class PredatorFactoryTest {
     @Test
     @DisplayName("Создание тигра с помощью фабрики и проверка сеттеров")
     public void testCreateTiger() {
-        Tiger tiger = (Tiger) predatorFactory.createAnimal("Tiger", new PredatorParams(5, 10));
+        Tiger tiger = (Tiger) predatorFactory.createInstance("Tiger", new PredatorParams(10), 5);
         assertEquals(5, tiger.getNumber());
         assertEquals(10, tiger.getFoodPerDay());
 
@@ -35,7 +35,7 @@ public class PredatorFactoryTest {
     @Test
     @DisplayName("Создание волка с помощью фабрики")
     public void testCreateWolf() {
-        Wolf wolf = (Wolf) predatorFactory.createAnimal("Wolf", new PredatorParams(6, 8));
+        Wolf wolf = (Wolf) predatorFactory.createInstance("Wolf", new PredatorParams(8), 6);
         assertEquals(6, wolf.getNumber());
         assertEquals(8, wolf.getFoodPerDay());
     }

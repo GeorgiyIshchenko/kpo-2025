@@ -22,7 +22,7 @@ public class HerboFactoryTest {
     @Test
     @DisplayName("Создание кролика с помощью фабрики")
     public void testCreateRabbit() {
-        Rabbit rabbit = (Rabbit) herboFactory.createAnimal("Rabbit", new HerboParams(3, 5, 7));
+        Rabbit rabbit = (Rabbit) herboFactory.createInstance("Rabbit", new HerboParams( 5, 7), 3);
         assertEquals(3, rabbit.getNumber());
         assertEquals(5, rabbit.getFoodPerDay());
         assertEquals(7, rabbit.getKindness());
@@ -31,7 +31,7 @@ public class HerboFactoryTest {
     @Test
     @DisplayName("Создание обезьяны с помощью фабрики")
     public void testCreateMonkey() {
-        Monkey monkey = (Monkey) herboFactory.createAnimal("Monkey", new HerboParams(4, 2, 3));
+        Monkey monkey = (Monkey) herboFactory.createInstance("Monkey", new HerboParams( 2, 3), 4);
         assertEquals(4, monkey.getNumber());
         assertEquals(2, monkey.getFoodPerDay());
         assertEquals(3, monkey.getKindness());

@@ -33,6 +33,6 @@ public class Animal implements IInventory, IALive {
         this.number = number;
     }
 
-    int foodPerDay;
-    int number;
+    int foodPerDay = 0;
+    int number = 0;
 }
