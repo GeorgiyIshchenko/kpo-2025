@@ -2,7 +2,6 @@ package hse.kpo.services;
 
 import hse.kpo.domains.Car;
 import hse.kpo.domains.Customer;
-import hse.kpo.domains.ProductionTypes;
 import hse.kpo.interfaces.ICarFactory;
 import hse.kpo.interfaces.ICarProvider;
 import lombok.Getter;
