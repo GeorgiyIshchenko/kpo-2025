@@ -1,5 +1,6 @@
 package hse.kpo.domains;
 
+import hse.kpo.enums.ProductionTypes;
 import hse.kpo.interfaces.IEngine;
 import lombok.Getter;
 import lombok.ToString;
