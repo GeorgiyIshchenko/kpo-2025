@@ -483,3 +483,413 @@ public class PaymentService {
 
 +1 Уникальный факт
 Исторически паттерн Service Locator активно использовался в старых Java EE приложениях, но со временем в большинстве проектов его стали заменять полноценными IoC-контейнерами (Spring, CDI и т.д.), потому что Service Locator иногда приводил к тому, что код становился «запутанным» и зависимым от «глобальной» точки доступа. Зато в некоторых играх (например, в архитектуре игровых движков) Service Locator до сих пор используется очень активно, чтобы управлять ресурсами (звуками, текстурами) во время игрового процесса.
+
+# Семинар 5
+
+
+## Порождающие паттерны в Java
+
+Порождающие (creational) паттерны — это группа шаблонов проектирования, которые упрощают и структурируют процесс создания объектов в программе. Они помогают скрыть детали создания сложных объектов и позволяют гибко подменять одну реализацию другой, не изменяя остальной код. Благодаря этому достигается более лёгкая поддержка и расширяемость приложения.
+
+---
+
+## 1. Singleton (Одиночка)
+
+**Определение:** Паттерн, который гарантирует существование только одного экземпляра класса и предоставляет глобальную точку доступа к этому экземпляру.
+
+**Пример из жизни:** Представьте себе центральный сервер авторизации, который должен быть в единственном экземпляре, чтобы все запросы шли через него.
+
+**Пример кода на Java:**
+```java
+public class Singleton {
+    // Единственный экземпляр класса
+    private static volatile Singleton instance;
+
+    // Закрытый конструктор, чтобы запретить создание экземпляров снаружи
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void doSomething() {
+        System.out.println("Выполняется метод единственного экземпляра");
+    }
+}
+```
+## 2. Factory (Фабрика)
+Определение: Предоставляет способ создать объекты без указания конкретных классов, т.е. в зависимости от входных данных фабрика возвращает разные объекты, но с единым интерфейсом.
+
+Пример из жизни: Кондитерская фабрика, где по запросу «хочу сладкое» вам могут выдать любой вид десерта (конфету, печенье, торт), но вы точно знаете, что это десерт.
+
+Пример кода на Java:
+
+```java
+// Общий интерфейс продукта
+interface Dessert {
+    void taste();
+}
+
+// Конкретные продукты
+class Candy implements Dessert {
+    @Override
+    public void taste() {
+        System.out.println("Конфета: сладкая и маленькая!");
+    }
+}
+
+class Cake implements Dessert {
+    @Override
+    public void taste() {
+        System.out.println("Торт: сладкий и большой!");
+    }
+}
+
+// Фабрика
+class DessertFactory {
+    public static Dessert createDessert(String type) {
+        switch (type) {
+            case "candy":
+                return new Candy();
+            case "cake":
+                return new Cake();
+            default:
+                throw new IllegalArgumentException("Неизвестный тип десерта");
+        }
+    }
+}
+
+// Пример использования
+class MainFactoryExample {
+    public static void main(String[] args) {
+        Dessert dessert1 = DessertFactory.createDessert("candy");
+        Dessert dessert2 = DessertFactory.createDessert("cake");
+        
+        dessert1.taste();
+        dessert2.taste();
+    }
+}
+```
+## 3. Factory Method (Фабричный метод)
+Определение: Предоставляет интерфейс создания объектов, позволяя подклассам решать, какой класс инстанцировать. Таким образом, фабричный метод делегирует создание объектов подклассам.
+
+Пример из жизни: Представьте компанию по доставке товаров. У них есть разные филиалы (подклассы), каждый из которых знает, как создать «посылку» нужного типа (обычная, хрупкая, срочная).
+
+Пример кода на Java:
+
+```java
+// Общий продукт
+interface Package {
+    void deliver();
+}
+
+// Конкретные продукты
+class StandardPackage implements Package {
+    @Override
+    public void deliver() {
+        System.out.println("Доставка стандартной посылки");
+    }
+}
+
+class FragilePackage implements Package {
+    @Override
+    public void deliver() {
+        System.out.println("Доставка хрупкой посылки");
+    }
+}
+
+// Абстрактный класс, содержащий фабричный метод
+abstract class DeliveryService {
+    // Фабричный метод
+    protected abstract Package createPackage();
+
+    public void sendPackage() {
+        Package aPackage = createPackage();
+        aPackage.deliver();
+    }
+}
+
+// Конкретные реализации фабричного метода
+class StandardDeliveryService extends DeliveryService {
+    @Override
+    protected Package createPackage() {
+        return new StandardPackage();
+    }
+}
+
+class FragileDeliveryService extends DeliveryService {
+    @Override
+    protected Package createPackage() {
+        return new FragilePackage();
+    }
+}
+
+// Пример использования
+class MainFactoryMethodExample {
+    public static void main(String[] args) {
+        DeliveryService service1 = new StandardDeliveryService();
+        DeliveryService service2 = new FragileDeliveryService();
+
+        service1.sendPackage();
+        service2.sendPackage();
+    }
+}
+```
+## 4. Abstract Factory (Абстрактная фабрика)
+Определение: Предоставляет интерфейс для создания семейств взаимосвязанных или взаимозависимых объектов, не уточняя их конкретных классов.
+
+Пример из жизни: Допустим, вам нужно создать «семейство» компонентов интерфейса пользователя (кнопки, поля ввода, списки), но для разных операционных систем (Windows, macOS, Linux). Каждая ОС имеет собственную реализацию, но все компоненты совместимы друг с другом в рамках одной системы.
+
+Пример кода на Java:
+
+```java
+// Семейство продуктов: Кнопка и Чекбокс
+interface Button {
+    void click();
+}
+
+interface Checkbox {
+    void check();
+}
+
+// Конкретные продукты для Windows
+class WindowsButton implements Button {
+    @Override
+    public void click() {
+        System.out.println("Нажата Windows-кнопка");
+    }
+}
+
+class WindowsCheckbox implements Checkbox {
+    @Override
+    public void check() {
+        System.out.println("Выбран Windows-чекбокс");
+    }
+}
+
+// Конкретные продукты для Mac
+class MacButton implements Button {
+    @Override
+    public void click() {
+        System.out.println("Нажата Mac-кнопка");
+    }
+}
+
+class MacCheckbox implements Checkbox {
+    @Override
+    public void check() {
+        System.out.println("Выбран Mac-чекбокс");
+    }
+}
+
+// Абстрактная фабрика
+interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+
+// Конкретные фабрики
+class WindowsFactory implements GUIFactory {
+    @Override
+    public Button createButton() {
+        return new WindowsButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new WindowsCheckbox();
+    }
+}
+
+class MacFactory implements GUIFactory {
+    @Override
+    public Button createButton() {
+        return new MacButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new MacCheckbox();
+    }
+}
+
+// Пример использования
+class MainAbstractFactoryExample {
+    public static void main(String[] args) {
+        GUIFactory factory;
+
+        // Можно выбрать нужную фабрику в зависимости от платформы
+        String osName = "Windows";
+
+        if (osName.equalsIgnoreCase("Windows")) {
+            factory = new WindowsFactory();
+        } else {
+            factory = new MacFactory();
+        }
+
+        Button button = factory.createButton();
+        Checkbox checkbox = factory.createCheckbox();
+
+        button.click();
+        checkbox.check();
+    }
+}
+```
+## 5. Builder (Строитель)
+Определение: Отделяет процесс конструирования сложного объекта от его представления, так что в результате одного и того же процесса конструирования могут получаться разные представления.
+
+Пример из жизни: Постройка дома, где у вас есть план (Builder), и в зависимости от него вы можете построить деревянный дом, кирпичный дом и т.д.
+
+Пример кода на Java:
+
+```java
+// Сложный объект
+class House {
+    private String walls;
+    private String roof;
+    private String interior;
+
+    public void setWalls(String walls) {
+        this.walls = walls;
+    }
+
+    public void setRoof(String roof) {
+        this.roof = roof;
+    }
+
+    public void setInterior(String interior) {
+        this.interior = interior;
+    }
+
+    @Override
+    public String toString() {
+        return "House{" +
+               "walls='" + walls + '\'' +
+               ", roof='" + roof + '\'' +
+               ", interior='" + interior + '\'' +
+               '}';
+    }
+}
+
+// Общий интерфейс строителя
+interface HouseBuilder {
+    void buildWalls();
+    void buildRoof();
+    void buildInterior();
+    House getResult();
+}
+
+// Конкретный строитель
+class WoodenHouseBuilder implements HouseBuilder {
+    private House house = new House();
+
+    @Override
+    public void buildWalls() {
+        house.setWalls("Деревянные стены");
+    }
+
+    @Override
+    public void buildRoof() {
+        house.setRoof("Деревянная крыша");
+    }
+
+    @Override
+    public void buildInterior() {
+        house.setInterior("Деревянный интерьер");
+    }
+
+    @Override
+    public House getResult() {
+        return house;
+    }
+}
+
+// Директор, управляющий процессом строительства
+class HouseDirector {
+    private HouseBuilder builder;
+
+    public HouseDirector(HouseBuilder builder) {
+        this.builder = builder;
+    }
+
+    public void constructHouse() {
+        builder.buildWalls();
+        builder.buildRoof();
+        builder.buildInterior();
+    }
+}
+
+// Пример использования
+class MainBuilderExample {
+    public static void main(String[] args) {
+        HouseBuilder builder = new WoodenHouseBuilder();
+        HouseDirector director = new HouseDirector(builder);
+
+        director.constructHouse();
+        House house = builder.getResult();
+        System.out.println(house);
+    }
+}
+```
+## 6. Prototype (Прототип)
+Определение: Позволяет копировать объекты, не вдаваясь в подробности их реализации. При этом копия может быть создана намного быстрее, чем объект «с нуля», особенно если объект сложный.
+
+Пример из жизни: Клонирование чертежей или дизайн-макетов: вы берёте шаблон (прототип) и создаёте новые копии, подстраивая их при необходимости.
+
+Пример кода на Java:
+
+```java
+class Shape implements Cloneable {
+    private String color;
+
+    public Shape(String color) {
+        this.color = color;
+    }
+
+    // Глубокая/поверхностная копия может различаться в зависимости от структуры класса
+    @Override
+    public Shape clone() {
+        try {
+            return (Shape) super.clone(); // поверхностная копия
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Clone not supported!", e);
+        }
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+}
+
+// Пример использования
+class MainPrototypeExample {
+    public static void main(String[] args) {
+        Shape originalShape = new Shape("Красный");
+        Shape clonedShape = originalShape.clone();
+
+        System.out.println("Оригинал: " + originalShape.getColor());
+        System.out.println("Копия: " + clonedShape.getColor());
+
+        // Изменяем цвет клона
+        clonedShape.setColor("Синий");
+        System.out.println("После изменения цвета клона:");
+        System.out.println("Оригинал: " + originalShape.getColor());
+        System.out.println("Копия: " + clonedShape.getColor());
+    }
+}
+```
+## +1 Уникальный факт
+Факт: В ранних версиях Java (до Java 5) многие программисты для реализации паттерна Singleton применяли двойную проверку (double-checked locking), которая могла работать нестабильно из-за особенностей модели памяти Java. Начиная с Java 5, volatile и улучшенная модель памяти гарантируют корректность такой реализации.
+
+Таким образом, порождающие паттерны помогают упростить и структурировать логику создания объектов, скрывая избыточные детали реализации, делая систему более гибкой и расширяемой.
