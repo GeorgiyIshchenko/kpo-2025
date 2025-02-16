@@ -1,5 +1,6 @@
 package hse.kpo;
 
+import hse.kpo.domains.Car;
 import hse.kpo.domains.Customer;
 import hse.kpo.factories.HandCarFactory;
 import hse.kpo.factories.HandShipFactory;
