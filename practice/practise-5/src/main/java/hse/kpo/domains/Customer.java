@@ -13,6 +13,9 @@ public class Customer {
 
     private final int handPower;
 
+    @Getter
+    private int iq;
+
     @Setter
     private Car car;
 
@@ -23,5 +26,14 @@ public class Customer {
         this.name = name;
         this.legPower = legPower;
         this.handPower = handPower;
+        this.iq = 0;
     }
+
+    public Customer(String name, int legPower, int handPower, int iq) {
+        this.name = name;
+        this.legPower = legPower;
+        this.handPower = handPower;
+        this.iq = iq;
+    }
+
 }
