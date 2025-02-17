@@ -3,10 +3,12 @@ package hse.kpo.domains;
 import hse.kpo.enums.ProductionTypes;
 import hse.kpo.interfaces.IEngine;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Класс, реализующий {@link IEngine} ручного типа.
  */
+@Slf4j
 @ToString
 public class LevitationEngine implements IEngine {
     @Override

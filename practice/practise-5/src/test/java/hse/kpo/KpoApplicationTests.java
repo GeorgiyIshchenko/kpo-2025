@@ -1,13 +1,15 @@
 package hse.kpo;
 
+import hse.kpo.domains.Car;
 import hse.kpo.domains.Customer;
-import hse.kpo.factories.cars.HandCarFactory;
-import hse.kpo.factories.cars.PedalCarFactory;
+import hse.kpo.factories.HandCarFactory;
+import hse.kpo.factories.HandShipFactory;
+import hse.kpo.factories.PedalCarFactory;
+import hse.kpo.factories.PedalShipFactory;
 import hse.kpo.params.EmptyEngineParams;
 import hse.kpo.params.PedalEngineParams;
-import hse.kpo.services.CarStorage;
-import hse.kpo.services.CustomerStorage;
-import hse.kpo.services.HseCarService;
+import hse.kpo.report.ReportBuilder;
+import hse.kpo.services.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +20,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 class KpoApplicationTests {
 
 	@Autowired
-	private CarStorage carStorage;
+	private CarService carService;
 
 	@Autowired
-	private CustomerStorage customerStorage;
+	private CustomerStorage carCustomerStorage;
 
 	@Autowired
 	private HseCarService hseCarService;
@@ -32,32 +34,93 @@ class KpoApplicationTests {
 	@Autowired
 	private HandCarFactory handCarFactory;
 
+	@Autowired
+	private ShipService shipService;
+
+	@Autowired
+	private CustomerStorage shipCustomerStorage;
+
+	@Autowired
+	private HseShipService hseShipService;
+
+	@Autowired
+	private PedalShipFactory pedalShipFactory;
+
+	@Autowired
+	private HandShipFactory handShipFactory;
+
 	@Test
 	@DisplayName("Тест загрузки контекста")
 	void contextLoads() {
-		Assertions.assertNotNull(carStorage);
-		Assertions.assertNotNull(customerStorage);
+		Assertions.assertNotNull(carService);
+		Assertions.assertNotNull(carCustomerStorage);
 		Assertions.assertNotNull(hseCarService);
 	}
 
 	@Test
-	@DisplayName("Тест загрузки контекста")
+	@DisplayName("Тест продажи авто")
 	void hseCarServiceTest() {
-		customerStorage.addCustomer(new Customer("Ivan1",6,4, 80));
-		customerStorage.addCustomer(new Customer("Maksim",4,6, 50));
-		customerStorage.addCustomer(new Customer("Petya",6,6, 120));
-		customerStorage.addCustomer(new Customer("Nikita",4,4, 100));
+		carCustomerStorage.addCustomer(new Customer("Ivan1",6,4));
+		carCustomerStorage.addCustomer(new Customer("Maksim",4,6));
+		carCustomerStorage.addCustomer(new Customer("Petya",6,6));
+		carCustomerStorage.addCustomer(new Customer("Nikita",4,4));
+		
+		carService.addCar(pedalCarFactory, new PedalEngineParams(6));
+		carService.addCar(pedalCarFactory, new PedalEngineParams(6));
 
-		carStorage.addCar(pedalCarFactory, new PedalEngineParams(6));
-		carStorage.addCar(pedalCarFactory, new PedalEngineParams(6));
+		carService.addCar(handCarFactory, EmptyEngineParams.DEFAULT);
+		carService.addCar(handCarFactory, EmptyEngineParams.DEFAULT);
 
-		carStorage.addCar(handCarFactory, EmptyEngineParams.DEFAULT);
-		carStorage.addCar(handCarFactory, EmptyEngineParams.DEFAULT);
-		customerStorage.getCustomers().stream().map(Customer::toString).forEach(System.out::println);
+		carCustomerStorage.getCustomers().stream().map(Customer::toString).forEach(System.out::println);
+
+		var reportBuilder = new ReportBuilder()
+				.addOperation("Инициализация системы")
+				.addCustomers(carCustomerStorage.getCustomers())
+				.addCars(carService.getCars());
 
 		hseCarService.sellCars();
 
-		customerStorage.getCustomers().stream().map(Customer::toString).forEach(System.out::println);
+		var report = reportBuilder
+				.addOperation("Продажа автомобилей")
+				.addCustomers(carCustomerStorage.getCustomers())
+				.build();
+
+		System.out.println(report.toString());
+
+		carCustomerStorage.getCustomers().stream().map(Customer::toString).forEach(System.out::println);
+	}
+
+	@Test
+	@DisplayName("Тест продажи кораблей")
+	void hseShipServiceTest() {
+		shipCustomerStorage.addCustomer(new Customer("Ivan1",6,4));
+		shipCustomerStorage.addCustomer(new Customer("Maksim",4,6));
+		shipCustomerStorage.addCustomer(new Customer("Petya",6,6));
+		shipCustomerStorage.addCustomer(new Customer("Nikita",4,4));
+
+		shipService.addShip(pedalShipFactory, new PedalEngineParams(6));
+		shipService.addShip(pedalShipFactory, new PedalEngineParams(6));
+
+		shipService.addShip(handShipFactory, EmptyEngineParams.DEFAULT);
+		shipService.addShip(handShipFactory, EmptyEngineParams.DEFAULT);
+
+		shipCustomerStorage.getCustomers().stream().map(Customer::toString).forEach(System.out::println);
+
+		var reportBuilder = new ReportBuilder()
+				.addOperation("Инициализация системы")
+				.addCustomers(shipCustomerStorage.getCustomers())
+				.addShips(shipService.getShips());
+
+		hseShipService.sellShips();
+
+		var report = reportBuilder
+				.addOperation("Продажа кораблей")
+				.addCustomers(shipCustomerStorage.getCustomers())
+				.build();
+
+		System.out.println(report.toString());
+
+		shipCustomerStorage.getCustomers().stream().map(Customer::toString).forEach(System.out::println);
 	}
 
 }

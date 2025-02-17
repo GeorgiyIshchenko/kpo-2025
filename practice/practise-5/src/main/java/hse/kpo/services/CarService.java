@@ -4,15 +4,16 @@ import hse.kpo.domains.Car;
 import hse.kpo.domains.Customer;
 import hse.kpo.interfaces.ICarFactory;
 import hse.kpo.interfaces.ICarProvider;
-import org.springframework.context.annotation.Scope;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CarStorage implements ICarProvider {
+public class CarService implements ICarProvider {
 
+    @Getter
     private final List<Car> cars = new ArrayList<>();
 
     private int carNumberCounter = 0;
@@ -32,7 +33,7 @@ public class CarStorage implements ICarProvider {
     public <TParams> void addCar(ICarFactory<TParams> carFactory, TParams carParams)
     {
         // создаем автомобиль из переданной фабрики
-        var car = carFactory.create(
+        var car = carFactory.createCar(
                 carParams, // передаем параметры
                 ++carNumberCounter // передаем номер - номер будет начинаться с 1
         );
