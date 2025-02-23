@@ -21,7 +21,10 @@ public class PedalEngine implements IEngine {
             case ProductionTypes.CATAMARAN -> {
                 return customer.getLegPower() > 2;
             }
-            case null, default -> throw new RuntimeException("This type of production doesn't exist");
+            case null, default -> {
+                log.error("Incorrect vehicle type!");
+                throw new RuntimeException("This type of production doesn't exist");
+            }
         }
     }
 
