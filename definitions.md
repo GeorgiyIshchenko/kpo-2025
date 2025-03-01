@@ -1494,3 +1494,368 @@ class VisitorExample {
 
 ## +1 Уникальный факт
 Факт: Все поведенческие паттерны фокусируются на взаимодействиях объектов и разделении обязанностей между ними. В результате правильно подобранный паттерн может существенно улучшить читаемость и поддерживаемость кода, не меняя при этом бизнес-логику приложения.
+
+# Семинар 7
+
+Ниже приведены краткие описания основных структурных паттернов, реальный пример (из жизни или кода) и один пример кода на Java. Всё находится в одном блоке, чтобы было легко скопировать в `.md` файл.
+
+## 1. Декоратор (Decorator)
+**Определение:** Позволяет динамически добавлять объектам новые обязанности, оборачивая их в объекты-«декораторы». При этом не требуется менять код исходных классов.  
+**Пример из жизни:** Подача кофе с добавками (сахар, сливки), когда обычный кофе «оборачивается» в различные топпинги.
+
+**Пример кода на Java:**
+interface Coffee {
+String getDescription();
+double getCost();
+}
+
+    class SimpleCoffee implements Coffee {
+        @Override
+        public String getDescription() {
+            return "Простой кофе";
+        }
+        @Override
+        public double getCost() {
+            return 50.0;
+        }
+    }
+
+    abstract class CoffeeDecorator implements Coffee {
+        protected Coffee coffee;
+        public CoffeeDecorator(Coffee coffee) {
+            this.coffee = coffee;
+        }
+        @Override
+        public String getDescription() {
+            return coffee.getDescription();
+        }
+        @Override
+        public double getCost() {
+            return coffee.getCost();
+        }
+    }
+
+    class MilkDecorator extends CoffeeDecorator {
+        public MilkDecorator(Coffee coffee) {
+            super(coffee);
+        }
+        @Override
+        public String getDescription() {
+            return coffee.getDescription() + ", с молоком";
+        }
+        @Override
+        public double getCost() {
+            return coffee.getCost() + 10.0;
+        }
+    }
+
+    class DecoratorExample {
+        public static void main(String[] args) {
+            Coffee coffee = new SimpleCoffee();
+            System.out.println(coffee.getDescription() + " = " + coffee.getCost());
+
+            coffee = new MilkDecorator(coffee);
+            System.out.println(coffee.getDescription() + " = " + coffee.getCost());
+        }
+    }
+
+---
+
+## 2. Адаптер (Adapter)
+**Определение:** Преобразует интерфейс одного класса к другому интерфейсу, ожидаемому клиентом. Позволяет объектам с несовместимыми интерфейсами работать вместе.  
+**Пример из жизни:** Зарядное устройство с переходником (адаптером), чтобы подключить «американскую» вилку в «европейскую» розетку.
+
+**Пример кода на Java:**
+interface MediaPlayer {
+void play(String audioType, String fileName);
+}
+
+    class AdvancedMediaPlayer {
+        public void playMp3(String fileName) {
+            System.out.println("Воспроизведение MP3: " + fileName);
+        }
+    }
+
+    class MediaPlayerAdapter implements MediaPlayer {
+        private AdvancedMediaPlayer advancedPlayer;
+        
+        public MediaPlayerAdapter(AdvancedMediaPlayer advancedPlayer) {
+            this.advancedPlayer = advancedPlayer;
+        }
+        
+        @Override
+        public void play(String audioType, String fileName) {
+            if (audioType.equalsIgnoreCase("mp3")) {
+                advancedPlayer.playMp3(fileName);
+            } else {
+                System.out.println("Формат не поддерживается адаптером");
+            }
+        }
+    }
+
+    class AdapterExample {
+        public static void main(String[] args) {
+            MediaPlayer player = new MediaPlayerAdapter(new AdvancedMediaPlayer());
+            player.play("mp3", "song.mp3");
+        }
+    }
+
+---
+
+## 3. Фасад (Facade)
+**Определение:** Предоставляет упрощённый интерфейс к сложной системе, скрывая от клиента детали реализации.  
+**Пример из жизни:** Универсальный пульт управления домашним кинотеатром, где одной кнопкой можно включить сразу несколько устройств.
+
+**Пример кода на Java:**
+class LightSystem {
+void turnOn() { System.out.println("Свет включён"); }
+void turnOff() { System.out.println("Свет выключен"); }
+}
+
+    class SoundSystem {
+        void setVolume(int level) { System.out.println("Громкость: " + level); }
+        void turnOn() { System.out.println("Аудиосистема включена"); }
+        void turnOff() { System.out.println("Аудиосистема выключена"); }
+    }
+
+    class HomeTheaterFacade {
+        private LightSystem lights;
+        private SoundSystem sound;
+
+        public HomeTheaterFacade(LightSystem lights, SoundSystem sound) {
+            this.lights = lights;
+            this.sound = sound;
+        }
+
+        public void watchMovie() {
+            lights.turnOff();
+            sound.turnOn();
+            sound.setVolume(5);
+            System.out.println("Запускаем фильм!");
+        }
+
+        public void endMovie() {
+            lights.turnOn();
+            sound.turnOff();
+            System.out.println("Фильм окончен!");
+        }
+    }
+
+    class FacadeExample {
+        public static void main(String[] args) {
+            LightSystem lights = new LightSystem();
+            SoundSystem sound = new SoundSystem();
+            HomeTheaterFacade facade = new HomeTheaterFacade(lights, sound);
+
+            facade.watchMovie();
+            facade.endMovie();
+        }
+    }
+
+---
+
+## 4. Заместитель (Прокси) (Proxy)
+**Определение:** Предоставляет объект-заместитель, который контролирует доступ к другому объекту (например, для ленивой инициализации или логирования).  
+**Пример из жизни:** Охранник, решающий, впустить ли посетителя к VIP-персоне.
+
+**Пример кода на Java:**
+interface Image {
+void display();
+}
+
+    class RealImage implements Image {
+        private String fileName;
+
+        public RealImage(String fileName) {
+            this.fileName = fileName;
+            loadFromDisk(fileName);
+        }
+
+        private void loadFromDisk(String fileName) {
+            System.out.println("Загрузка: " + fileName);
+        }
+
+        @Override
+        public void display() {
+            System.out.println("Отображение: " + fileName);
+        }
+    }
+
+    class ProxyImage implements Image {
+        private String fileName;
+        private RealImage realImage;
+
+        public ProxyImage(String fileName) {
+            this.fileName = fileName;
+        }
+
+        @Override
+        public void display() {
+            if (realImage == null) {
+                realImage = new RealImage(fileName);
+            }
+            realImage.display();
+        }
+    }
+
+    class ProxyExample {
+        public static void main(String[] args) {
+            Image image = new ProxyImage("test.jpg");
+            image.display();  // Загрузка произойдёт здесь
+            image.display();  // Повторный вызов без загрузки
+        }
+    }
+
+---
+
+## 5. Компоновщик (Composite)
+**Определение:** Позволяет сгруппировать объекты в древовидную структуру и работать с ними, как с одним объектом.  
+**Пример из жизни:** Иерархия компании: директор, менеджеры, сотрудники — каждый может выполнять общий метод «показать детали», но структура при этом древовидная.
+
+**Пример кода на Java:**
+import java.util.ArrayList;
+import java.util.List;
+
+    interface Employee {
+        void showDetails();
+    }
+
+    class Developer implements Employee {
+        private String name;
+        public Developer(String name) {
+            this.name = name;
+        }
+        @Override
+        public void showDetails() {
+            System.out.println("Разработчик: " + name);
+        }
+    }
+
+    class Manager implements Employee {
+        private String name;
+        private List<Employee> subordinates = new ArrayList<>();
+
+        public Manager(String name) {
+            this.name = name;
+        }
+
+        public void addSubordinate(Employee e) {
+            subordinates.add(e);
+        }
+
+        @Override
+        public void showDetails() {
+            System.out.println("Менеджер: " + name);
+            for (Employee e : subordinates) {
+                e.showDetails();
+            }
+        }
+    }
+
+    class CompositeExample {
+        public static void main(String[] args) {
+            Manager manager = new Manager("Alice");
+            manager.addSubordinate(new Developer("Bob"));
+            manager.addSubordinate(new Developer("Charlie"));
+
+            manager.showDetails();
+        }
+    }
+
+---
+
+## 6. Мост (Bridge)
+**Определение:** Разделяет абстракцию и реализацию, позволяя им независимо изменяться. «Мост» связывает их, но каждая часть может развиваться сама по себе.  
+**Пример из жизни:** Пульт (абстракция) и разные устройства (реализация — телевизор, DVD), которые он может включать.
+
+**Пример кода на Java:**
+interface Device {
+void turnOn();
+void turnOff();
+}
+
+    class TV implements Device {
+        @Override
+        public void turnOn() {
+            System.out.println("Телевизор включён");
+        }
+        @Override
+        public void turnOff() {
+            System.out.println("Телевизор выключен");
+        }
+    }
+
+    abstract class Remote {
+        protected Device device;
+        public Remote(Device device) {
+            this.device = device;
+        }
+        abstract void powerButton();
+    }
+
+    class BasicRemote extends Remote {
+        public BasicRemote(Device device) {
+            super(device);
+        }
+        @Override
+        void powerButton() {
+            System.out.println("Нажата кнопка питания");
+            device.turnOn();
+        }
+    }
+
+    class BridgeExample {
+        public static void main(String[] args) {
+            Device tv = new TV();
+            Remote remote = new BasicRemote(tv);
+            remote.powerButton();
+        }
+    }
+
+---
+
+## 7. Приспособленец (Flyweight)
+**Определение:** Разделяет состояние объекта на внутреннее и внешнее, чтобы многократно использовать одни и те же объекты (кеширование), экономя ресурсы.  
+**Пример из жизни:** Шрифты, где одинаковые символы одного стиля хранятся как один объект, а различия (цвет, позиция) относятся к контексту.
+
+**Пример кода на Java:**
+import java.util.HashMap;
+import java.util.Map;
+
+    class CharacterFlyweight {
+        private char symbol; // Внутреннее состояние
+
+        public CharacterFlyweight(char symbol) {
+            this.symbol = symbol;
+        }
+
+        public void print(String font) { // Внешнее состояние как аргумент
+            System.out.println("Символ: " + symbol + " с шрифтом: " + font);
+        }
+    }
+
+    class FlyweightFactory {
+        private Map<Character, CharacterFlyweight> cache = new HashMap<>();
+
+        public CharacterFlyweight getChar(char c) {
+            if (!cache.containsKey(c)) {
+                cache.put(c, new CharacterFlyweight(c));
+            }
+            return cache.get(c);
+        }
+    }
+
+    class FlyweightExample {
+        public static void main(String[] args) {
+            FlyweightFactory factory = new FlyweightFactory();
+            String text = "HELLO";
+            for (char c : text.toCharArray()) {
+                factory.getChar(c).print("Arial");
+            }
+        }
+    }
+
+---
+
+## +1 Уникальный факт
+**Факт:** Важно понимать, что структурные паттерны больше о том, как части системы взаимодействуют (композиция или наследование), а не о бизнес-логике. Их корректное применение снижает связанность кода (coupling) и упрощает масштабирование проекта.
