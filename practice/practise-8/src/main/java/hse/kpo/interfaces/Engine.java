@@ -14,4 +14,6 @@ public interface Engine {
      * @return true, если двигатель подходит покупателю
      */
     boolean isCompatible(Customer customer, ProductionTypes type);
+
+    String getEngineType();
 }
