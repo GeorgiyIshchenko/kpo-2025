@@ -1,16 +1,13 @@
 package hse.kpo.services;
 
-import hse.kpo.adapters.WheelCatamaran;
-import hse.kpo.domains.Catamaran;
-import hse.kpo.domains.Customer;
-import hse.kpo.domains.Report;
+import hse.kpo.domains.*;
 import hse.kpo.factories.cars.HandCarFactory;
 import hse.kpo.factories.cars.LevitationCarFactory;
 import hse.kpo.factories.cars.PedalCarFactory;
-import hse.kpo.factories.cars.WheelCatamaranFactory;
 import hse.kpo.factories.catamarans.HandCatamaranFactory;
 import hse.kpo.factories.catamarans.LevitationCatamaranFactory;
 import hse.kpo.factories.catamarans.PedalCatamaranFactory;
+import hse.kpo.factories.catamarans.WheelCatamaranFactory;
 import hse.kpo.observers.ReportSalesObserver;
 import hse.kpo.params.EmptyEngineParams;
 import hse.kpo.params.PedalEngineParams;
@@ -69,8 +66,8 @@ public class Hse {
         carStorage.addCar(handCarFactory, EmptyEngineParams.DEFAULT);
     }
 
-    public void addWheelCatamaran(Catamaran catamaran){
-        carStorage.getCars().add(new WheelCatamaran(catamaran));
+    public void addWheelCatamaran(){
+        carStorage.getCars().add(wheelCatamaranFactory.create(new Catamaran(carStorage.getCars().size() + 1000, new LevitationEngine())));
     }
 
     public void sell() {
