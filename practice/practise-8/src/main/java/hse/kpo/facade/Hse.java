@@ -1,22 +1,34 @@
 package hse.kpo.facade;
 
-import hse.kpo.domains.Catamaran;
-import hse.kpo.domains.CatamaranWithWheels;
+import hse.kpo.domains.Report;
+import hse.kpo.domains.catamarans.Catamaran;
+import hse.kpo.domains.catamarans.CatamaranWithWheels;
 import hse.kpo.domains.Customer;
+import hse.kpo.enums.ReportFormat;
+import hse.kpo.enums.SerializeFormat;
+import hse.kpo.export.reports.ReportExporter;
+import hse.kpo.export.transport.TransportExporter;
+import hse.kpo.factories.ReportExporterFactory;
+import hse.kpo.factories.TransportExporterFactory;
 import hse.kpo.factories.cars.*;
 import hse.kpo.factories.catamarans.*;
+import hse.kpo.interfaces.Transport;
 import hse.kpo.params.EmptyEngineParams;
 import hse.kpo.params.PedalEngineParams;
-import hse.kpo.services.HseCarService;
-import hse.kpo.services.HseCatamaranService;
-import hse.kpo.storages.CarStorage;
-import hse.kpo.storages.CatamaranStorage;
+import hse.kpo.services.cars.HseCarService;
+import hse.kpo.services.catamarans.HseCatamaranService;
+import hse.kpo.storages.cars.CarStorage;
+import hse.kpo.storages.catamarans.CatamaranStorage;
 import hse.kpo.storages.CustomerStorage;
 import hse.kpo.observers.SalesObserver;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.io.Writer;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * Фасад для работы с системой продажи транспортных средств.
@@ -38,6 +50,8 @@ public class Hse {
     private final PedalCatamaranFactory pedalCatamaranFactory;
     private final HandCatamaranFactory handCatamaranFactory;
     private final LevitationCatamaranFactory levitationCatamaranFactory;
+    private final ReportExporterFactory reportExporterFactory;
+    private final TransportExporterFactory transportExporterFactory;
 
     @PostConstruct
     private void init() {
@@ -143,5 +157,31 @@ public class Hse {
      */
     public String generateReport() {
         return salesObserver.buildReport().toString();
+    }
+
+    public void exportReport(ReportFormat format, Writer writer) {
+        Report report = salesObserver.buildReport();
+        ReportExporter exporter = reportExporterFactory.create(format);
+
+        try {
+            exporter.export(report, writer);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void exportTransport(SerializeFormat format, Writer writer) {
+        List<Transport> transports = Stream.concat(
+                        carStorage.getCars().stream(),
+                        catamaranStorage.getCatamarans().stream())
+                .toList();
+
+        TransportExporter exporter = transportExporterFactory.create(format);
+
+        try {
+            exporter.export(transports, writer);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }

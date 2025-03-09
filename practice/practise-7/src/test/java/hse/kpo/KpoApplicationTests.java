@@ -1,14 +1,10 @@
 package hse.kpo;
 
-import hse.kpo.adapters.WheelCatamaran;
-import hse.kpo.domains.Catamaran;
-import hse.kpo.domains.HandEngine;
-import hse.kpo.domains.PedalEngine;
 import hse.kpo.factories.cars.HandCarFactory;
 import hse.kpo.factories.cars.PedalCarFactory;
-import hse.kpo.factories.cars.WheelCatamaranFactory;
 import hse.kpo.factories.catamarans.HandCatamaranFactory;
 import hse.kpo.factories.catamarans.PedalCatamaranFactory;
+import hse.kpo.factories.catamarans.WheelCatamaranFactory;
 import hse.kpo.observers.SalesObserver;
 import hse.kpo.services.Hse;
 import hse.kpo.services.HseCatamaranService;
@@ -72,15 +68,15 @@ class KpoApplicationTests {
 	@DisplayName("Тест")
 	void hseCarServiceTest() {
 
-		hse.addCustomer("Ivan1",6,4, 150);
+		hse.addCustomer("Ivan1",6,4, 300);
 		hse.addCustomer("Maksim", 4, 6, 80);
 		hse.addCustomer("Petya", 6, 6, 20);
-		hse.addCustomer("Nikita", 4, 4, 300);
+		hse.addCustomer("Nikita", 6, 6, 300);
 
-		hse.addWheelCatamaran(new Catamaran(1337, new HandEngine()));
-		hse.addPedalCar(6);
-		hse.addPedalCar(6);
-		// hse.addHandCar();
+		hse.addWheelCatamaran();
+//		hse.addPedalCar(6);
+//		hse.addPedalCar(6);
+//		hse.addHandCar();
 
 		hse.sell();
 
