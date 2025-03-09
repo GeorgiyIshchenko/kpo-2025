@@ -1,9 +1,7 @@
-VIN,Type,EngineType
-3,CAR,PEDAL
-4,CAR,HAND
-5,CAR,HAND
-6,CAR,LEVITATION
-7,CAR,LEVITATION
-5,CATAMARAN,HAND
-6,CATAMARAN,LEVITATION
-7,CATAMARAN,LEVITATION
+VIN,Engine Type,Transport Type
+2,Pedal,Car
+3,Pedal,Car
+10001,Levitation,Car
+4,Hand,Car
+5,Hand,Car
+1,Levitation,Catamaran

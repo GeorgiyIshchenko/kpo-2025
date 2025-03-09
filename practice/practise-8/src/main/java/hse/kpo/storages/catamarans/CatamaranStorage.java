@@ -1,11 +1,13 @@
-package hse.kpo.storages;
+package hse.kpo.storages.catamarans;
 
-import hse.kpo.domains.Catamaran;
+import hse.kpo.domains.catamarans.Catamaran;
 import hse.kpo.domains.Customer;
 import hse.kpo.interfaces.catamarans.CatamaranFactory;
 import hse.kpo.interfaces.catamarans.CatamaranProvider;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CatamaranStorage implements CatamaranProvider {
 
+    @Getter
     private final List<Catamaran> catamarans = new ArrayList<>();
 
     private int carNumberCounter = 0;
