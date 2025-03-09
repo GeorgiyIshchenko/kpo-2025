@@ -25,4 +25,9 @@ public class PedalEngine implements Engine {
     public PedalEngine(int size) {
         this.size = size;
     }
+
+    @Override
+    public String getEngineType() {
+        return "Pedal";
+    }
 }

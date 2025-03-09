@@ -17,4 +17,9 @@ public class LevitationEngine implements Engine {
             case null, default -> throw new RuntimeException("This type of production doesn't exist");
         };
     }
+
+    @Override
+    public String getEngineType() {
+        return "Levitation";
+    }
 }
