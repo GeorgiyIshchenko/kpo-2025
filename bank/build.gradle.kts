@@ -45,6 +45,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+	implementation("org.yaml:snakeyaml:1.8")
 }
 
 tasks.withType<Test> {

@@ -48,7 +48,6 @@ public class FinanceService implements InFinanceService {
         if (account == null) {
             throw new NoSuchElementException("BankAccount с id " + id + " не найден");
         }
-        // Можно делать дополнительную валидацию
         if (newBalance < 0) {
             throw new IllegalArgumentException("Баланс не может быть отрицательным");
         }
