@@ -3,10 +3,12 @@ package bank.services;
 import bank.domains.Category;
 import bank.domains.Operation;
 import bank.enums.OperationType;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 public class AnalyticsService {
 
     private final FinanceService financeService;

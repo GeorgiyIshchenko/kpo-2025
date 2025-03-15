@@ -174,4 +174,10 @@ public class FinanceService implements InFinanceService {
         return new ArrayList<>(operations.values());
     }
 
+    public void clear() {
+        bankAccounts.clear();
+        categories.clear();
+        operations.clear();
+    }
+
 }

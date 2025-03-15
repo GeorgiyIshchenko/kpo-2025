@@ -3,9 +3,11 @@ package bank.factories;
 import bank.domains.Operation;
 import bank.enums.OperationType;
 import bank.factories.interfaces.InOperationFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class OperationFactory implements InOperationFactory {
 
     public Operation create(

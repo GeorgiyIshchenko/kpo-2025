@@ -13,12 +13,13 @@ public class YamlImport extends AbstractImportTemplate {
         super(financeService);
     }
 
+    @java.lang.SuppressWarnings("unchecked")
     @Override
     protected List<CommonDTO> parseContent(String content) {
         Yaml yaml = new Yaml();
         Object object = yaml.load(content);
 
-        List<Map<String, Object>> rawData = (List<Map<String, Object>>) object; // pohui na warning
+        List<Map<String, Object>> rawData = (List<Map<String, Object>>) object;
 
         List<CommonDTO> rows = new ArrayList<>();
         for (Map<String, Object> map : rawData) {
