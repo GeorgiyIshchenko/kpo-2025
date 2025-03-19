@@ -1,4 +1,0 @@
-package bank.commands.management;
-
-public class RecalculateBalanceCommand {
-}

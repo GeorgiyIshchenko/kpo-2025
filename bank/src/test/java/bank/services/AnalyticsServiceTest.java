@@ -1,7 +1,9 @@
 package bank.services;
 
 import bank.config.AppTestConfig;
+import bank.domains.Category;
 import bank.domains.Operation;
+import bank.enums.CategoryType;
 import bank.enums.OperationType;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -65,4 +68,27 @@ class AnalyticsServiceTest {
         assertEquals(201, sorted.get(0).getId());
         assertEquals(200, sorted.get(1).getId());
     }
+
+    @Test
+    void testGroupOperationsByCategory() throws InterruptedException {
+        financeService.createBankAccount(3, "Acc3", 0);
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(2025, Calendar.JANUARY, 1, 10, 0); // 2025-01-01 10:00
+        Date date1 = cal.getTime();
+
+        cal.set(2025, Calendar.JANUARY, 1, 9, 0);
+        Date date2 = cal.getTime();
+
+        Category cat1 = financeService.createCategory(1, "TestCategory1", CategoryType.INCOME);
+        Category cat2 = financeService.createCategory(2, "TestCategory2", CategoryType.EXPENSE);
+        financeService.createOperation(300, OperationType.DEPOSIT, 3, 500, date1, "Op1", cat1.getId());
+        financeService.createOperation(301, OperationType.WITHDRAWAL, 3, 100, date2, "Op2", cat2.getId());
+
+        Map<Integer, List<Operation>> categorized = analyticsService.groupOperationsByCategoryId(date2, date1);
+
+        assertEquals(1, categorized.get(cat1.getId()).size());
+        assertEquals(300, categorized.get(cat1.getId()).getFirst().getId());
+    }
+
 }

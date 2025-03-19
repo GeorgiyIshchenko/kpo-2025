@@ -52,4 +52,13 @@ public class JsonExportVisitor implements FinanceVisitor {
     public String getJsonResult() throws JsonProcessingException {
         return mapper.writeValueAsString(exportData);
     }
+
+    public void writeToFile(String path) {
+        try {
+            java.nio.file.Files.write(java.nio.file.Paths.get(path), getJsonResult().getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

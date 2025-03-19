@@ -34,15 +34,15 @@ public class AnalyticsService {
         return income - expense;
     }
 
-    public Map<Category, List<Operation>> groupOperationsByCategory(Date from, Date to) {
+    public Map<Integer, List<Operation>> groupOperationsByCategoryId(Date from, Date to) {
         List<Operation> allOps = financeService.getAllOperations();
-        Map<Category, List<Operation>> result = new HashMap<>();
+        Map<Integer, List<Operation>> result = new HashMap<>();
 
         for (Operation op : allOps) {
             if (isInRange(op.getDate(), from, to)) {
                 Category cat = financeService.getCategory(op.getCategoryId());
                 if (cat != null) {
-                    result.computeIfAbsent(cat, k -> new ArrayList<>()).add(op);
+                    result.computeIfAbsent(cat.getId(), k -> new ArrayList<>()).add(op);
                 }
             }
         }

@@ -40,7 +40,7 @@ public class YamlExportVisitor implements FinanceVisitor {
         item.put("operationType", operation.getOperationType());
         item.put("bankAccountId", operation.getBankAccountId());
         item.put("amount", operation.getAmount());
-        item.put("date", operation.getDate());
+        item.put("date", operation.getDate().toInstant().toEpochMilli());
         item.put("description", operation.getDescription());
         item.put("categoryId", operation.getCategoryId());
         exportData.add(item);
@@ -50,4 +50,14 @@ public class YamlExportVisitor implements FinanceVisitor {
         Yaml yaml = new Yaml();
         return yaml.dump(exportData);
     }
+
+
+    public void writeToFile(String path) {
+        try {
+            java.nio.file.Files.write(java.nio.file.Paths.get(path), getYamlResult().getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

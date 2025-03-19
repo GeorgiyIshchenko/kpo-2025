@@ -33,7 +33,7 @@ public class CsvExportVisitor implements FinanceVisitor {
                 operation.getOperationType(),
                 operation.getBankAccountId(),
                 operation.getAmount(),
-                operation.getDate(),
+                operation.getDate().toInstant().toEpochMilli(),
                 operation.getDescription(),
                 operation.getCategoryId());
         lines.add(line);
@@ -42,4 +42,13 @@ public class CsvExportVisitor implements FinanceVisitor {
     public String getCsvResult() {
         return String.join("\n", lines);
     }
+
+    public void writeToFile(String path) {
+        try {
+            java.nio.file.Files.write(java.nio.file.Paths.get(path), getCsvResult().getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

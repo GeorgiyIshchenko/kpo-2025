@@ -20,13 +20,13 @@ import java.util.Arrays;
 @ContextConfiguration(classes = AppTestConfig.class)
 class DataManagementServiceTest {
 
-    @Autowired
-    private FinanceService financeService;
+    FinanceService financeService;
 
     private DataManagementService dataManagementService;
 
     @BeforeEach
     void setUp() {
+        financeService = Mockito.mock(FinanceService.class);
         dataManagementService = new DataManagementService(financeService);
     }
 

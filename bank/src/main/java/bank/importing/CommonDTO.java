@@ -17,7 +17,7 @@ public class CommonDTO {
 
     private String entityType;
 
-    // Поля, характерные для любого домена
+    // Поля, характерные для любого домена (кроме операции, у которой нет name)
     private int id;
     private String name;
 
