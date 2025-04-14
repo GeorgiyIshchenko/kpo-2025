@@ -1,10 +1,11 @@
 package hse.kpo.controllers.customers;
 
 import hse.kpo.domains.Customer;
+import hse.kpo.domains.cars.Car;
 import hse.kpo.dto.request.CustomerRequest;
 import hse.kpo.dto.response.CustomerResponse;
 import hse.kpo.facade.Hse;
-import hse.kpo.storages.CustomerStorage;
+import hse.kpo.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Клиенты", description = "Управление клиентами")
 public class CustomerController {
     private final Hse hseFacade;
-    private final CustomerStorage customerStorage;
+    private final CustomerService customerStorage;
 
     @PostMapping
     @Operation(summary = "Создать клиента")
@@ -79,7 +80,7 @@ public class CustomerController {
                 customer.getLegPower(),
                 customer.getHandPower(),
                 customer.getIq(),
-                customer.getCar() != null ? customer.getCar().getVin() : null,
+                customer.getCars() != null ? customer.getCars().stream().map(Car::getVin).collect(Collectors.toList()) : null,
                 customer.getCatamaran() != null ? customer.getCatamaran().getVin() : null
         );
     }
