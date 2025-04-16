@@ -1,0 +1,91 @@
+package bank.console;
+
+import bank.commands.Command;
+import bank.commands.CommandRegistry;
+import bank.enums.CategoryType;
+import bank.enums.OperationType;
+import bank.services.AnalyticsService;
+import bank.services.DataManagementService;
+import bank.services.FinanceService;
+
+import java.lang.reflect.Constructor;
+import java.util.Date;
+import java.util.List;
+
+public class ReflectionCommandFactory {
+
+    private final CommandRegistry registry;
+    private final FinanceService financeService;
+    private final AnalyticsService analyticsService;
+    private final DataManagementService dataManagementService;
+
+
+    public ReflectionCommandFactory(CommandRegistry registry) {
+        this.registry = registry;
+    }
+
+    public Command<?> createCommand(String className, List<String> argStrings) throws Exception {
+        Class<?> cmdClass = registry.getCommandClass(className);
+        if (cmdClass == null) {
+            throw new ClassNotFoundException("Неизвестный класс команды: " + className);
+        }
+
+        Constructor<?>[] ctors = cmdClass.getConstructors();
+
+        // Тут прикол в том, чтобы найти подходящий по длине аргументов конструктор и пофакаться с ним
+        for (Constructor<?> ctor : ctors) {
+            Class<?>[] paramTypes = ctor.getParameterTypes();
+            if (paramTypes.length == argStrings.size()) {
+                Object[] initargs = new Object[paramTypes.length];
+                for (int i = 0; i < paramTypes.length; i++) {
+                    initargs[i] = convert(argStrings.get(i), paramTypes[i]);
+                }
+                return (Command<?>) ctor.newInstance(initargs);
+            }
+        }
+
+        throw new NoSuchMethodException("Нет подходящего конструктора в " + className);
+    }
+
+    private Object convert(String arg, Class<?> targetType) {
+        if (targetType.equals(int.class) || targetType.equals(Integer.class)) {
+            return Integer.parseInt(arg);
+        }
+        if (targetType.equals(double.class) || targetType.equals(Double.class)) {
+            return Double.parseDouble(arg);
+        }
+        else if (targetType.equals(String.class)) {
+
+            if (arg.equalsIgnoreCase("INCOME")){
+                return CategoryType.INCOME;
+            }
+            if (arg.equalsIgnoreCase("EXPENSE")){
+                return CategoryType.EXPENSE;
+            }
+            if (arg.equalsIgnoreCase("DEPOSIT")){
+                return OperationType.DEPOSIT;
+            }
+            if (arg.equalsIgnoreCase("WITHDRAWL")){
+                return OperationType.WITHDRAWAL;
+            }
+
+            return arg.replaceAll("^\"|\"$", "");
+        }
+        if (targetType.equals(java.util.Date.class)) {
+            try {
+                long millis = Long.parseLong(arg);
+                return new Date(millis);
+            } catch (NumberFormatException e) {
+                try {
+                    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                    sdf.setLenient(false); // чтобы исключить 2023-13-99
+                    return sdf.parse(arg);
+                } catch (java.text.ParseException ex) {
+                    throw new IllegalArgumentException("Невозможно преобразовать '" + arg
+                            + "' в Date (ожидается timestamp или yyyy-MM-dd)", ex);
+                }
+            }
+        }
+        throw new IllegalArgumentException("Не поддерживаем тип: " + targetType.getName());
+    }
+}

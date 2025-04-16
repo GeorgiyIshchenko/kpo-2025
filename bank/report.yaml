@@ -1,0 +1,4 @@
+- {entityType: ACCOUNT, id: 1, name: MainAcc, balance: 1000.0}
+- {entityType: CATEGORY, id: 10, name: Food, type: !!bank.enums.CategoryType 'EXPENSE'}
+- {entityType: OPERATION, id: 100, operationType: !!bank.enums.OperationType 'DEPOSIT',
+  bankAccountId: 1, amount: 1000, date: 1697046781234, description: Salary, categoryId: 10}
