@@ -3,7 +3,7 @@ package zoo_web.application.services;
 import zoo_web.domain.events.DomainEventPublisher;
 import zoo_web.domain.events.FeedingTimeEvent;
 import zoo_web.domain.models.FeedingSchedule;
-import zoo_web.application.repository.FeedingScheduleRepository;
+import zoo_web.domain.repository.FeedingScheduleRepository;
 import zoo_web.domain.vo.AnimalId;
 
 import java.time.LocalDateTime;

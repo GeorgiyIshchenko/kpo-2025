@@ -1,7 +1,7 @@
 package zoo_web.infrastructure.repositories;
 
 import zoo_web.domain.models.Animal;
-import zoo_web.application.repository.AnimalRepository;
+import zoo_web.domain.repository.AnimalRepository;
 import zoo_web.domain.vo.AnimalId;
 
 import java.util.*;
@@ -29,6 +29,11 @@ public class AnimalInMemoryRepository implements AnimalRepository {
     @Override
     public void delete(AnimalId id) {
         store.remove(id.getValue());
+    }
+
+    @Override
+    public void deleteAll() {
+        store.clear();
     }
 
 }

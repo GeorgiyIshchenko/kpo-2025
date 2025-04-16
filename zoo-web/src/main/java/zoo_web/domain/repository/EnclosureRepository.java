@@ -1,4 +1,4 @@
-package zoo_web.application.repository;
+package zoo_web.domain.repository;
 
 import zoo_web.domain.models.Enclosure;
 import zoo_web.domain.vo.EnclosureId;
@@ -12,5 +12,6 @@ public interface EnclosureRepository {
     List<Enclosure> findAll();
     Enclosure save(Enclosure enclosure);
     void delete(EnclosureId enclosureId);
+    void deleteAll();
 
 }

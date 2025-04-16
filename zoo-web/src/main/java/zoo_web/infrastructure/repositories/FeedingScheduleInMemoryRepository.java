@@ -1,7 +1,7 @@
 package zoo_web.infrastructure.repositories;
 
 import zoo_web.domain.models.FeedingSchedule;
-import zoo_web.application.repository.FeedingScheduleRepository;
+import zoo_web.domain.repository.FeedingScheduleRepository;
 import zoo_web.domain.vo.AnimalId;
 
 import java.util.*;
@@ -26,6 +26,11 @@ public class FeedingScheduleInMemoryRepository implements FeedingScheduleReposit
         List<FeedingSchedule> feedings = store.computeIfAbsent(feedingSchedule.getAnimalId().getValue(), k -> new ArrayList<>());
         feedings.add(feedingSchedule);
         return feedingSchedule;
+    }
+
+    @Override
+    public void deleteAll() {
+        store.clear();
     }
 
 }

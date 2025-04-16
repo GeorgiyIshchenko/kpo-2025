@@ -1,7 +1,7 @@
 package zoo_web.infrastructure.repositories;
 
 import zoo_web.domain.models.Enclosure;
-import zoo_web.application.repository.EnclosureRepository;
+import zoo_web.domain.repository.EnclosureRepository;
 import zoo_web.domain.vo.EnclosureId;
 
 import java.util.*;
@@ -29,6 +29,11 @@ public class EnclosureInMemoryRepository implements EnclosureRepository {
     @Override
     public void delete(EnclosureId id) {
         store.remove(id.getValue());
+    }
+
+    @Override
+    public void deleteAll() {
+        store.clear();
     }
 
 }

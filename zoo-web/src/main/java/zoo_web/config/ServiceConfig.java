@@ -2,9 +2,9 @@ package zoo_web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import zoo_web.application.repository.AnimalRepository;
-import zoo_web.application.repository.EnclosureRepository;
-import zoo_web.application.repository.FeedingScheduleRepository;
+import zoo_web.domain.repository.AnimalRepository;
+import zoo_web.domain.repository.EnclosureRepository;
+import zoo_web.domain.repository.FeedingScheduleRepository;
 import zoo_web.application.services.AnimalTransferService;
 import zoo_web.application.services.FeedingOrganizationService;
 import zoo_web.application.services.ZooStatisticsService;

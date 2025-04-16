@@ -13,5 +13,6 @@ public class AnimalDto {
     public Date dateOfBirth;
     public String favoriteFood;
     public String status;
+    public String sex;
     public UUID enclosureId;
 }

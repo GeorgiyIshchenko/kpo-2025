@@ -1,4 +1,4 @@
-package zoo_web.infrastructure.controllers;
+package zoo_web.presentation.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

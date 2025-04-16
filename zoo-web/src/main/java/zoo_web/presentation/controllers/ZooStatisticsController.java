@@ -1,4 +1,4 @@
-package zoo_web.infrastructure.controllers;
+package zoo_web.presentation.controllers;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

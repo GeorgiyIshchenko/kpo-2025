@@ -1,8 +1,6 @@
-package zoo_web.infrastructure.controllers;
+package zoo_web.presentation.controllers;
 
-import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
-import zoo_web.application.repository.AnimalRepository;
+import zoo_web.domain.repository.AnimalRepository;
 import zoo_web.domain.models.Animal;
 import zoo_web.domain.vo.AnimalId;
 import zoo_web.infrastructure.dto.AnimalDto;
@@ -12,13 +10,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import zoo_web.infrastructure.repositories.AnimalInMemoryRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/animals")
+@RequestMapping("/animals")
 public class AnimalController {
 
     private final AnimalRepository animalRepository;

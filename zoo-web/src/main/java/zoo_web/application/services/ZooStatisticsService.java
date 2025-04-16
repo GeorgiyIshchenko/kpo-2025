@@ -1,9 +1,8 @@
 package zoo_web.application.services;
 
 import zoo_web.domain.enums.AnimalStatus;
-import zoo_web.domain.enums.AnimalType;
-import zoo_web.application.repository.AnimalRepository;
-import zoo_web.application.repository.EnclosureRepository;
+import zoo_web.domain.repository.AnimalRepository;
+import zoo_web.domain.repository.EnclosureRepository;
 
 public class ZooStatisticsService {
 
@@ -18,10 +17,6 @@ public class ZooStatisticsService {
 
     public int countAnimals() {
         return animalRepository.findAll().size();
-    }
-
-    public int countEnclosures() {
-        return enclosureRepository.findAll().size();
     }
 
     public int countFreeEnclosures() {

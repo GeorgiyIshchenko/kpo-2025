@@ -1,4 +1,4 @@
-package zoo_web.application.repository;
+package zoo_web.domain.repository;
 
 import zoo_web.domain.models.Animal;
 import zoo_web.domain.vo.AnimalId;
@@ -12,5 +12,6 @@ public interface AnimalRepository {
     List<Animal> findAll();
     Animal save(Animal animal);
     void delete(AnimalId animalId);
+    void deleteAll();
 
 }

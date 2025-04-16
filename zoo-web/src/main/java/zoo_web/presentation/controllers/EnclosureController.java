@@ -1,21 +1,15 @@
-package zoo_web.infrastructure.controllers;
+package zoo_web.presentation.controllers;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import zoo_web.application.repository.EnclosureRepository;
-import zoo_web.domain.enums.AnimalType;
-import zoo_web.domain.models.Animal;
+import zoo_web.domain.repository.EnclosureRepository;
 import zoo_web.domain.models.Enclosure;
 import zoo_web.domain.vo.EnclosureId;
 import zoo_web.infrastructure.dto.EnclosureDto;
-import zoo_web.infrastructure.dto.request.CreateAnimalRequest;
 import zoo_web.infrastructure.dto.request.CreateEnclosureRequest;
-import zoo_web.infrastructure.dto.response.AnimalMapper;
 import zoo_web.infrastructure.dto.response.EnclosureMapper;
-import zoo_web.infrastructure.repositories.EnclosureInMemoryRepository;
 
 import java.util.List;
 import java.util.UUID;

@@ -31,6 +31,7 @@ public class AnimalMapper {
         dto.name = animal.getName();
         dto.dateOfBirth = animal.getBithDate();
         dto.favoriteFood = animal.getFavoriteFood();
+        dto.sex = animal.getSex().name();
         dto.status = animal.getStatus().name();
         if (animal.getEnclosureId() != null) {
             dto.enclosureId = animal.getEnclosureId().getValue();

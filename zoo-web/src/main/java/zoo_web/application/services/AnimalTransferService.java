@@ -4,8 +4,8 @@ import zoo_web.domain.events.AnimalMovedEvent;
 import zoo_web.domain.events.DomainEventPublisher;
 import zoo_web.domain.models.Animal;
 import zoo_web.domain.models.Enclosure;
-import zoo_web.application.repository.AnimalRepository;
-import zoo_web.application.repository.EnclosureRepository;
+import zoo_web.domain.repository.AnimalRepository;
+import zoo_web.domain.repository.EnclosureRepository;
 import zoo_web.domain.vo.AnimalId;
 import zoo_web.domain.vo.EnclosureId;
 
