@@ -1,0 +1,11 @@
+grpc:
+  client:
+    report-service:
+      address: 'static://localhost:9090' # Порт grpc основного приложения
+      negotiation-type: plaintext
+
+telegram:
+  bot:
+    username: "brainrot_animal_bot"
+    token: "7638806255:AAHRwUHt8WABBxgn0PmAeM-xffZmz_P8ksE"
+    chat-id: "532044292"
