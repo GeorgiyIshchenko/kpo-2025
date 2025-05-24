@@ -1,0 +1,106 @@
+networks:
+  internal:
+
+volumes:
+  storage-db-data:
+  analysis-db-data:
+  minio-data:
+
+services:
+
+  storage-db:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"
+    container_name: storage-db
+    environment:
+      POSTGRES_DB: storage
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - storage-db-data:/var/lib/postgresql/data
+    networks: [internal]
+
+  analysis-db:
+    image: postgres:16-alpine
+    ports:
+      - "5434:5432"
+    container_name: analysis-db
+    environment:
+      POSTGRES_DB: analysis
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - analysis-db-data:/var/lib/postgresql/data
+    networks: [internal]
+
+  minio:
+    image: minio/minio:RELEASE.2024-04-18T19-09-19Z
+    container_name: minio
+    command: server /data --console-address ":9090"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    networks: [internal]
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks: [internal]
+
+  kafka:
+    image: confluentinc/cp-kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    networks: [internal]
+
+#  api-gateway:
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    build: ./api-gateway
+#    container_name: api-gateway
+#    ports:
+#      - "8080:8080"
+#    depends_on: [file-storage, analysis]
+#    networks: [internal]
+#
+#  file-storage:
+#    build: ./file-storage-service
+#    container_name: file-storage
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://storage-db:5432/storage
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgres
+#      MINIO_ENDPOINT: http://minio:9000
+#      SPRING_PROFILES_ACTIVE: docker
+#    depends_on: [storage-db, minio]
+#    ports:
+#      - "8081:8081"
+#    networks: [internal]
+#
+#  analysis:
+#    build: ./analysis-service
+#    container_name: analysis
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://analysis-db:5432/analysis
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgres
+#      SPRING_PROFILES_ACTIVE: docker
+#    depends_on: [analysis-db]
+#    ports:
+#      - "8082:8082"
+#    networks: [internal]

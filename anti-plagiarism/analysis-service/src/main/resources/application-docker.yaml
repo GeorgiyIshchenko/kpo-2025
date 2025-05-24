@@ -1,0 +1,28 @@
+server:
+  port: 8082
+
+spring:
+  codec:
+    max-in-memory-size: 10MB
+  datasource:
+    url: jdbc:postgresql://analysis-db:5432/analysis
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate.ddl-auto: update
+  kafka:
+    bootstrap-servers: kafka:9092
+
+storage:
+  url: http://file-storage:8081
+
+quickchart:
+  base-url: https://quickchart.io/wordcloud
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: method
