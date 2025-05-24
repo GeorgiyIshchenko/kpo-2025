@@ -11,7 +11,7 @@ repositories { mavenCentral() }
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2024.0.1") // Moorgate
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2024.0.1")
     }
 }
 
@@ -21,9 +21,11 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
 
-    implementation("io.minio:minio:8.5.12")
+    implementation("org.apache.pdfbox:pdfbox:3.0.2")
+
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
     implementation("org.postgresql:postgresql:42.7.3")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
@@ -33,7 +35,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter:1.19.7")
     testImplementation("org.testcontainers:postgresql:1.19.7")
-    testImplementation("org.testcontainers:minio:1.19.7")
 }
 
 tasks.test { useJUnitPlatform() }

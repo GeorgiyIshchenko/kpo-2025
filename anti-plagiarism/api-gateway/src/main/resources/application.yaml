@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+routes:
+  storage:  http://localhost:8081
+  analysis: http://localhost:8082
+
+spring:
+  codec:
+    max-in-memory-size: 10MB
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      default-filters:
+#        - AddResponseHeader=Access-Control-Allow-Origin,*
+        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_FIRST
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            exposedHeaders: "Content-Disposition"
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: File Storage
+        url: /storage/v3/api-docs
+      - name: Analysis
+        url: /analysis/v3/api-docs
+    displayOperationId: true
+    path: /swagger-ui.html

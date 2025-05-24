@@ -1,17 +1,14 @@
-FROM eclipse-temurin:21-jdk-alpine as build
-WORKDIR /workspace/app
+# Build stage
+FROM gradle:8.7-jdk21 AS build
+WORKDIR /app
+COPY build.gradle.kts settings.gradle.kts ./
+COPY --chown=gradle:gradle . .
+RUN gradle dependencies --refresh-dependencies && \
+    gradle build -x test --no-daemon
 
-COPY gradle gradle
-COPY gradlew .
-COPY settings.gradle.kts .
-COPY build.gradle.kts .
-COPY file-storage-service/build.gradle.kts file-storage-service/
-COPY file-storage-service/src file-storage-service/src
-
-RUN ./gradlew file-storage-service:bootJar -x test
-
-FROM eclipse-temurin:21-jre-alpine
-VOLUME /tmp
-VOLUME /file-storage
-COPY --from=build /workspace/app/file-storage-service/build/libs/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Run stage
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar app.jar
+EXPOSE 8081
+CMD ["java", "-jar", "app.jar"]
