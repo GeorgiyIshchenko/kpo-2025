@@ -14,7 +14,7 @@ dependencies {
     implementation("org.apache.commons:commons-text:1.11.0")
     
     // For HTTP client (for word cloud API)
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    // implementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 dependencyManagement {

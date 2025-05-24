@@ -37,6 +37,7 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-actuator")
         implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5")
+        implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.8")
         
         compileOnly("org.projectlombok:lombok")
         annotationProcessor("org.projectlombok:lombok")
