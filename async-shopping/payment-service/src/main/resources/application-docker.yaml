@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: jdbc:postgresql://accounts-db:5432/appdb
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: kafka:9092
+    producer.value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      properties:
+        spring.json.trusted.packages: com.asyncshopping.*
+
+  task:
+    scheduling:
+      pool:
+        size: 5
+
+server:
+  port: 8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

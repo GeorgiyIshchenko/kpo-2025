@@ -1,0 +1,95 @@
+networks:
+  internal:
+    driver: bridge
+
+services:
+  postgres-orders:
+    image: postgres:16
+    container_name: orders-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - order-data:/var/lib/postgresql/data
+    networks: [internal]
+
+  postgres-accounts:
+      image: postgres:16
+      container_name: accounts-db
+      restart: unless-stopped
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: appdb
+      ports:
+        - "5433:5432"
+      volumes:
+        - account-data:/var/lib/postgresql/data
+      networks: [internal]
+
+  zookeeper:
+    image: bitnami/zookeeper:3.8
+    container_name: zookeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks: [internal]
+
+  kafka:
+    image: bitnami/kafka:3.3
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "false"
+    depends_on:
+      - zookeeper
+    networks: [internal]
+
+#  order-service:
+#    build: ./order-service
+#    depends_on:
+#      - postgres-orders
+#      - kafka
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    ports:
+#      - "8081:8081"
+#    networks: [internal]
+#
+#  payment-service:
+#    build: ./payment-service
+#    depends_on:
+#      - postgres-accounts
+#      - kafka
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    ports:
+#      - "8082:8082"
+#    networks: [internal]
+#
+#  websocket-gateway:
+#    build: ./websocket-gateway
+#    depends_on:
+#      - kafka
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    ports:
+#      - "8080:8080"
+#    networks: [internal]
+
+volumes:
+  order-data:
+  account-data:

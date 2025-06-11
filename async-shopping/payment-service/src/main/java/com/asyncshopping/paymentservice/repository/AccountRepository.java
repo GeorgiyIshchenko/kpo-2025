@@ -1,0 +1,6 @@
+package com.asyncshopping.paymentservice.repository;
+
+import com.asyncshopping.paymentservice.model.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AccountRepository extends JpaRepository<Account, Long> {}

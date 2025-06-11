@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/appdb
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer.value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    consumer:
+      properties:
+        spring.json.use.type.headers: true
+        spring.json.trusted.packages: com.asyncshopping.*
+
+  task:
+    scheduling:
+      pool:
+        size: 5
+
+logging.level:
+  org.springframework.kafka.listener: DEBUG
+  org.springframework.kafka.support.serializer: DEBUG
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+logging:
+  level:
+    root: INFO
+    com.asyncshopping.orderservice: DEBUG

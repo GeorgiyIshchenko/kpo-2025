@@ -1,0 +1,17 @@
+plugins {
+    java
+    checkstyle
+    jacoco
+    id("org.springframework.boot") version "3.4.2"
+    id("io.spring.dependency-management") version "1.1.7"
+}
+
+allprojects {
+    group = "com.hse"
+    version = "1.0.0"
+    repositories { mavenCentral() }
+}
+
+dependencies {
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
+}
