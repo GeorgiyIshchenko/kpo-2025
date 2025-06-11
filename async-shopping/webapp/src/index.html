@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async‑Shopping — Orders</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        body{font-family: system-ui, sans-serif; margin: 2rem;}
+        input,button{padding:.5rem 1rem;font-size:1rem}
+        #status{display:inline-block;min-width:6rem;font-weight:700;margin-left:1rem}
+        .NEW{color:#555}
+        .PAID{color:#2e7d32}
+        .FAILED{color:#d32f2f}
+    </style>
+</head>
+<body>
+<h2>Track order status</h2>
+<label>
+    Order ID:
+    <input id="orderId" type="number" min="1" required />
+</label>
+<button id="subscribeBtn">Subscribe</button>
+<span id="status" class="NEW">—</span>
+
+<script>
+    const gatewayUrl = "http://localhost:8080/api/ws";
+    let stomp;
+
+    function connect() {
+        const socket = new SockJS(gatewayUrl);
+        stomp = Stomp.over(socket);
+        stomp.reconnect_delay = 2000;
+        stomp.connect({}, () => console.log("STOMP connected"));
+    }
+
+    function subscribe(orderId) {
+        document.getElementById("status").textContent = "...";
+        stomp.subscribe(`/topic/orders/${orderId}`, msg => {
+            const evt = JSON.parse(msg.body);
+            const s = evt.newStatus;
+            const el = document.getElementById("status");
+            el.textContent = s;
+            el.className = s;
+        });
+    }
+
+    document.getElementById("subscribeBtn").addEventListener("click", () => {
+        const id = document.getElementById("orderId").value;
+        if (!id) return alert("Enter order id");
+        if (!stomp || !stomp.connected) connect();
+        setTimeout(() => subscribe(id), 300);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: websocket-gateway
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      properties:
+        spring.json.trusted.packages: com.asyncshopping.*
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+logging:
+  level:
+    root: INFO
+    com.asyncshopping.websocketgateway: DEBUG
